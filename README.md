@@ -34,6 +34,6 @@ Proyecto en desarrollo para la asignatura **INF 2236 - Programación Avanzada**.
 
 ## Autores
 
-Giulliano Martínez
-Patricio Hernandez
-Ethan Troncoso
+* Giulliano Martínez
+* Patricio Hernandez
+* Ethan Troncoso
