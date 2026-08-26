@@ -69,12 +69,14 @@ public class Actividad {
         this.tipoActividad = tipoActividad;
     }
 
+    
     @Override
     public String toString() {
-        return "[" + id + "] "
-                + horaInicio + " - " + horaFin
+        String texto = horaInicio + " - " + horaFin
                 + " | " + titulo
-                + " | " + tipoActividad
+                + " | " + getTipoActividad()
                 + " | " + descripcion;
+
+        return texto;
     }
 }

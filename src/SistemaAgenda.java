@@ -4,12 +4,14 @@ import java.util.TreeMap;
 
 public class SistemaAgenda {
 
-    private static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
     private TreeMap<LocalDate, DiaAgenda> dias;
+    private DateTimeFormatter formatoFecha;
+    private int siguienteId;
 
     public SistemaAgenda() {
         this.dias = new TreeMap<LocalDate, DiaAgenda>();
+        this.formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        this.siguienteId = 1;
     }
 
     public TreeMap<LocalDate, DiaAgenda> getDias() {
@@ -18,6 +20,12 @@ public class SistemaAgenda {
 
     public void setDias(TreeMap<LocalDate, DiaAgenda> dias) {
         this.dias = dias;
+    }
+
+    public int generarIdActividad() {
+        int idGenerado = siguienteId;
+        siguienteId = siguienteId + 1;
+        return idGenerado;
     }
 
     public void agregarDia(DiaAgenda dia) {
@@ -43,7 +51,7 @@ public class SistemaAgenda {
 
         for (DiaAgenda dia : dias.values()) {
             System.out.println("----------------------------");
-            System.out.println("Fecha: " + dia.getFecha().format(FORMATO_FECHA));
+            System.out.println("Fecha: " + dia.getFecha().format(formatoFecha));
             dia.mostrarActividades();
         }
     }
