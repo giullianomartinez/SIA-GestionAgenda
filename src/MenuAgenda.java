@@ -15,13 +15,13 @@ public class MenuAgenda {
     public MenuAgenda(SistemaAgenda sistema, BufferedReader lector) {
         this.sistema = sistema;
         this.lector = lector;
-        this.formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        this.formatoHora = DateTimeFormatter.ofPattern("HH:mm");
+        this.formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // formatea fecha para recibirla unicamente con /
+        this.formatoHora = DateTimeFormatter.ofPattern("HH:mm"); // formatea hora para recibirla unicamente en formato Hora:Minutos
     }
 
     public void iniciar() {
 
-        boolean continuar = true;
+        boolean continuar = true;  // Variable utilizada para el while. Termina el bucle cuando el usuario ingresa opcion (3) Salir.
 
         while (continuar) {
 
@@ -167,7 +167,7 @@ public class MenuAgenda {
 
     public LocalDate leerFecha(String mensaje) throws IOException {
 
-        boolean fechaValida = false;
+        boolean fechaValida = false; 
         LocalDate fecha = null;
 
         while (!fechaValida) {
