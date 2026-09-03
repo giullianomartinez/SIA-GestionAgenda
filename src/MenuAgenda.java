@@ -12,12 +12,37 @@ public class MenuAgenda {
     private BufferedReader lector;
     private DateTimeFormatter formatoFecha;
     private DateTimeFormatter formatoHora;
+    private boolean modoPrueba;
 
     public MenuAgenda(SistemaAgenda sistema) {
         this.sistema = sistema;
         this.lector = new BufferedReader(new InputStreamReader(System.in));
         this.formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         this.formatoHora = DateTimeFormatter.ofPattern("HH:mm");
+        this.modoPrueba = false;
+    }
+
+    public void seleccionarModo() {
+        try {
+            System.out.println("===== MODO DE INICIO =====");
+            System.out.println("1. Modo normal");
+            System.out.println("2. Modo prueba");
+            System.out.print("Seleccione una opcion: ");
+
+            String opcion = lector.readLine();
+
+            if (opcion.equals("2")) {
+                modoPrueba = true;
+                sistema.cargarDatosIniciales();
+                System.out.println("Modo prueba iniciado.");
+            } else {
+                modoPrueba = false;
+                System.out.println("Modo normal iniciado.");
+            }
+
+        } catch (IOException error) {
+            System.out.println("No se pudo leer la opcion.");
+        }
     }
 
     public void iniciar() {
@@ -31,14 +56,18 @@ public class MenuAgenda {
 
                 if (opcion.equals("1")) {
                     agregarActividad();
+
                 } else if (opcion.equals("2")) {
                     sistema.mostrarDias();
+
                 } else if (opcion.equals("3")) {
                     continuar = false;
                     System.out.println("Programa finalizado.");
+
                 } else {
                     System.out.println("Opcion no valida.");
                 }
+
             } catch (IOException error) {
                 System.out.println("No se pudo leer la opcion ingresada.");
             }
@@ -73,7 +102,10 @@ public class MenuAgenda {
         String descripcion = leerTexto("Ingrese descripcion: ");
 
         int id = sistema.generarIdActividad();
-        Actividad actividad = crearActividadPorTipo(id, tipo, titulo, horaInicio, horaFin, descripcion);
+
+        Actividad actividad = crearActividadPorTipo(
+                id, tipo, titulo, horaInicio, horaFin, descripcion
+        );
 
         sistema.agregarActividad(fecha, actividad);
 
@@ -86,27 +118,47 @@ public class MenuAgenda {
 
         if (tipo.equals("1")) {
             String asignatura = leerTexto("Ingrese asignatura: ");
-            return new ActividadAcademica(id, titulo, horaInicio, horaFin, descripcion, asignatura);
+
+            return new ActividadAcademica(
+                    id, titulo, horaInicio, horaFin,
+                    descripcion, asignatura
+            );
         }
 
         if (tipo.equals("2")) {
             String nombreProyecto = leerTexto("Ingrese nombre del proyecto: ");
-            return new ActividadProyecto(id, titulo, horaInicio, horaFin, descripcion, nombreProyecto);
+
+            return new ActividadProyecto(
+                    id, titulo, horaInicio, horaFin,
+                    descripcion, nombreProyecto
+            );
         }
 
         if (tipo.equals("3")) {
             String lugar = leerTexto("Ingrese lugar: ");
-            return new ActividadPersonal(id, titulo, horaInicio, horaFin, descripcion, lugar);
+
+            return new ActividadPersonal(
+                    id, titulo, horaInicio, horaFin,
+                    descripcion, lugar
+            );
         }
 
         if (tipo.equals("4")) {
             String lugar = leerTexto("Ingrese lugar: ");
-            return new ActividadOtro(id, titulo, horaInicio, horaFin, descripcion, lugar);
+
+            return new ActividadOtro(
+                    id, titulo, horaInicio, horaFin,
+                    descripcion, lugar
+            );
         }
 
         System.out.println("Tipo no valido. Se agregara como otro.");
         String lugar = leerTexto("Ingrese lugar: ");
-        return new ActividadOtro(id, titulo, horaInicio, horaFin, descripcion, lugar);
+
+        return new ActividadOtro(
+                id, titulo, horaInicio, horaFin,
+                descripcion, lugar
+        );
     }
 
     public String leerTexto(String mensaje) throws IOException {
@@ -133,8 +185,11 @@ public class MenuAgenda {
             try {
                 fecha = LocalDate.parse(texto, formatoFecha);
                 fechaValida = true;
+
             } catch (DateTimeParseException error) {
-                System.out.println("Fecha invalida. Ejemplo valido: 23/08/2026");
+                System.out.println(
+                        "Fecha invalida. Ejemplo valido: 23/08/2026"
+                );
             }
         }
 
@@ -152,8 +207,11 @@ public class MenuAgenda {
             try {
                 hora = LocalTime.parse(texto, formatoHora);
                 horaValida = true;
+
             } catch (DateTimeParseException error) {
-                System.out.println("Hora invalida. Ejemplo valido: 14:30");
+                System.out.println(
+                        "Hora invalida. Ejemplo valido: 14:30"
+                );
             }
         }
 
