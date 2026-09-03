@@ -101,12 +101,12 @@ public class MenuAgenda {
 
         if (tipo.equals("4")) {
             String lugar = leerTexto("Ingrese lugar: ");
-            return new ActividadPersonal(id, titulo, horaInicio, horaFin, descripcion, lugar);
+            return new ActividadOtro(id, titulo, horaInicio, horaFin, descripcion, lugar);
         }
 
         System.out.println("Tipo no valido. Se agregara como otro.");
         String lugar = leerTexto("Ingrese lugar: ");
-        return new ActividadPersonal(id, titulo, horaInicio, horaFin, descripcion, lugar);
+        return new ActividadOtro(id, titulo, horaInicio, horaFin, descripcion, lugar);
     }
 
     public String leerTexto(String mensaje) throws IOException {
