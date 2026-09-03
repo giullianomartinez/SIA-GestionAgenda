@@ -1,3 +1,4 @@
+import java.time.LocalTime;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.TreeMap;
@@ -54,5 +55,53 @@ public class SistemaAgenda {
             System.out.println("Fecha: " + dia.getFecha().format(formatoFecha));
             dia.mostrarActividades();
         }
+    }
+
+    public void cargarDatosIniciales() {
+
+        LocalDate fecha1 = LocalDate.of(2026, 9, 8);
+        LocalDate fecha2 = LocalDate.of(2026, 9, 9);
+
+        ActividadAcademica academica = new ActividadAcademica(
+            generarIdActividad(),
+            "Clase de Programacion Avanzada",
+            LocalTime.of(10, 0),
+            LocalTime.of(11, 30),
+            "Clase INF2236",
+            "Programacion Avanzada"
+        );
+
+        ActividadProyecto proyecto = new ActividadProyecto(
+            generarIdActividad(),
+            "Reunion proyecto SIA",
+            LocalTime.of(15, 0),
+            LocalTime.of(16, 0),
+            "Revision del avance del proyecto",
+            "SIA-GestionAgenda"
+        );
+
+        ActividadPersonal personal = new ActividadPersonal(
+            generarIdActividad(),
+            "Control medico",
+            LocalTime.of(9, 0),
+            LocalTime.of(10, 0),
+            "Control general",
+            "Centro medico"
+        );
+
+        ActividadOtro otro = new ActividadOtro(
+            generarIdActividad(),
+            "Tramite personal",
+            LocalTime.of(12, 0),
+            LocalTime.of(13, 0),
+            "Realizar tramite pendiente",
+            "Valparaiso"
+        );
+
+        agregarActividad(fecha1, academica);
+        agregarActividad(fecha1, proyecto);
+
+        agregarActividad(fecha2, personal);
+        agregarActividad(fecha2, otro);
     }
 }
