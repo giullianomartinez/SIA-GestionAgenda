@@ -70,8 +70,7 @@ public class Actividad {
     }
 
     
-    @Override
-    public String toString() {
+    public String mostrarActividad() {
         String texto = horaInicio + " - " + horaFin
                 + " | " + titulo
                 + " | " + getTipoActividad()
