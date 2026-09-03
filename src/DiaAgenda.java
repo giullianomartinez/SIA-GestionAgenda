@@ -38,7 +38,7 @@ public class DiaAgenda {
         }
 
         for (Actividad actividad : actividades) {
-            System.out.println(actividad);
+            System.out.println(actividad.mostrarActividad());
         }
     }
 }
