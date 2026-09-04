@@ -27,10 +27,12 @@ public class DiaAgenda {
         this.actividades = actividades;
     }
 
+    // Agrega una actividad a la lista de actividades correspondientes a este día.
     public void agregarActividad(Actividad actividad) {
         actividades.add(actividad);
     }
 
+    // Muestra todas las actividades registradas en este día.
     public void mostrarActividades() {
         if (actividades.isEmpty()) {
             System.out.println("No hay actividades registradas.");
