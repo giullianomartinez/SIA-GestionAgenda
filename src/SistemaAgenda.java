@@ -23,6 +23,22 @@ public class SistemaAgenda {
         this.dias = dias;
     }
 
+    public DateTimeFormatter getFormatoFecha() {
+        return formatoFecha;
+    }
+
+    public void setFormatoFecha(DateTimeFormatter formatoFecha) {
+        this.formatoFecha = formatoFecha;
+    }
+    
+    public int getSiguienteId() {
+        return siguienteId;
+    }
+    
+    public void setSiguienteId(int siguienteId) {
+        this.siguienteId = siguienteId;
+    }
+
     public int generarIdActividad() {
         int idGenerado = siguienteId;
         siguienteId = siguienteId + 1;
