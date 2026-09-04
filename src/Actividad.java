@@ -69,7 +69,7 @@ public class Actividad {
         this.tipoActividad = tipoActividad;
     }
 
-    
+    // Devuelve la información principal de la actividad en un formato legible.
     public String mostrarActividad() {
         String texto = horaInicio + " - " + horaFin
                 + " | " + titulo
