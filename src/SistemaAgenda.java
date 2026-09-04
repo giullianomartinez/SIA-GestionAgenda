@@ -73,6 +73,7 @@ public class SistemaAgenda {
         }
     }
 
+    // Carga actividades utilizadas exclusivamente para ejecutar el sistema en modo prueba.
     public void cargarDatosIniciales() {
 
         LocalDate fecha1 = LocalDate.of(2026, 9, 8);
