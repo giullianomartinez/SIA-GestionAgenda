@@ -61,11 +61,11 @@ public class MenuInicio {
                     System.out.println("Programa finalizado.");
 
                 } else {
-                    System.out.println("Opcion no valida.");
+                    System.out.println("\nOpcion no valida.");
                 }
 
             } catch (IOException error) {
-                System.out.println("No se pudo leer la opcion.");
+                System.out.println("\nNo se pudo leer la opcion.");
             }
         }
     }
