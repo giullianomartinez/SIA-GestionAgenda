@@ -46,8 +46,8 @@ public class MenuInicio {
 
                 } else if (opcion.equals("2")) {
 
-                    // Se crea un sistema independiente para evitar mezclar datos de prueba con datos normales.
-                    // El modo prueba utiliza una agenda independiente con datos precargados.
+                    // El modo prueba utiliza una agenda independiente con datos precargados,
+                    // evitando mezclarlos con los datos del modo normal.
                     SistemaAgenda sistema = new SistemaAgenda();
                     sistema.cargarDatosIniciales();
 
