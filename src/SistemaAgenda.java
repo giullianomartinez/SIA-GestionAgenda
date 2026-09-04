@@ -64,6 +64,38 @@ public class SistemaAgenda {
         dia.agregarActividad(actividad);
     }
 
+    // Busca una actividad por su identificador único.
+    public Actividad buscarActividad(int id) {
+    
+        for (DiaAgenda dia : dias.values()) {
+    
+            for (Actividad actividad : dia.getActividades()) {
+    
+                if (actividad.getId() == id) {
+                    return actividad;
+                }
+            }
+        }
+    
+        return null;
+    }
+    
+    // Busca una actividad por su título.
+    public Actividad buscarActividad(String titulo) {
+    
+        for (DiaAgenda dia : dias.values()) {
+    
+            for (Actividad actividad : dia.getActividades()) {
+    
+                if (actividad.getTitulo().equalsIgnoreCase(titulo)) {
+                    return actividad;
+                }
+            }
+        }
+    
+        return null;
+    }
+
     // Recorre los días de la agenda en orden cronológico y muestra sus actividades.
     public void mostrarDias() {
         if (dias.isEmpty()) {
