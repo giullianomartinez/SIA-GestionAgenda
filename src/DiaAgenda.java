@@ -43,4 +43,22 @@ public class DiaAgenda {
             System.out.println(actividad.mostrarActividad());
         }
     }
+
+    // Muestra únicamente las actividades que pertenecen al tipo indicado.
+    public void mostrarActividades(String tipoActividad) {
+    
+        boolean encontrada = false;
+    
+        for (Actividad actividad : actividades) {
+    
+            if (actividad.getTipoActividad().equalsIgnoreCase(tipoActividad)) {
+                System.out.println(actividad.mostrarActividad());
+                encontrada = true;
+            }
+        }
+    
+        if (!encontrada) {
+            System.out.println("\nNo hay actividades de este tipo.");
+        }
+}
 }
