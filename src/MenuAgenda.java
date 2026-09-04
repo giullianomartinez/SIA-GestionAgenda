@@ -101,6 +101,49 @@ public class MenuAgenda {
         System.out.print("Seleccione una opcion: ");
     }
 
+    // Muestra las actividades de una fecha filtradas por tipo.
+    public void mostrarActividadesPorTipo() throws IOException {
+    
+        LocalDate fecha = leerFecha("Ingrese fecha (dd/MM/yyyy): ");
+    
+        DiaAgenda dia = sistema.getDias().get(fecha);
+    
+        if (dia == null) {
+            System.out.println("\nNo existe un dia registrado con esa fecha.");
+            return;
+        }
+    
+        System.out.println();
+        System.out.println("Tipo de actividad:");
+        System.out.println("1. Academica");
+        System.out.println("2. Proyecto");
+        System.out.println("3. Personal");
+        System.out.println("4. Otro");
+        System.out.print("Seleccione un tipo: ");
+    
+        String opcion = lector.readLine();
+        String tipoActividad;
+    
+        if (opcion.equals("1")) {
+            tipoActividad = "Academica";
+    
+        } else if (opcion.equals("2")) {
+            tipoActividad = "Proyecto";
+    
+        } else if (opcion.equals("3")) {
+            tipoActividad = "Personal";
+    
+        } else if (opcion.equals("4")) {
+            tipoActividad = "Otro";
+    
+        } else {
+            System.out.println("\nTipo no valido.");
+            return;
+        }
+    
+        dia.mostrarActividades(tipoActividad);
+    }
+    
     // Solicita los datos necesarios al usuario y registra una nueva actividad.
     public void agregarActividad() throws IOException {
 
