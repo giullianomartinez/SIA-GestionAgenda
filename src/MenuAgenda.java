@@ -77,11 +77,11 @@ public class MenuAgenda {
                     continuar = false;
 
                 } else {
-                    System.out.println("Opcion no valida.");
+                    System.out.println("\nOpcion no valida.");
                 }
 
             } catch (IOException error) {
-                System.out.println("No se pudo leer la opcion ingresada.");
+                System.out.println("\nNo se pudo leer la opcion ingresada.");
             }
         }
     }
@@ -124,7 +124,7 @@ public class MenuAgenda {
 
         sistema.agregarActividad(fecha, actividad);
 
-        System.out.println("Actividad agregada correctamente.");
+        System.out.println("\nActividad agregada correctamente.");
     }
 
     // Crea la subclase de Actividad correspondiente al tipo seleccionado por el usuario.
@@ -194,7 +194,7 @@ public class MenuAgenda {
 
         while (texto.trim().length() == 0) {
 
-            System.out.println("El texto no puede estar vacio.");
+            System.out.println("\nEl texto no puede estar vacio.");
             System.out.print(mensaje);
             texto = lector.readLine();
         }
@@ -221,7 +221,7 @@ public class MenuAgenda {
             } catch (DateTimeParseException error) {
 
                 System.out.println(
-                        "Fecha invalida. Ejemplo valido: 23/08/2026"
+                        "\nFecha invalida. Ejemplo valido: 23/08/2026"
                 );
             }
         }
@@ -248,7 +248,7 @@ public class MenuAgenda {
             } catch (DateTimeParseException error) {
 
                 System.out.println(
-                        "Hora invalida. Ejemplo valido: 14:30"
+                        "\nHora invalida. Ejemplo valido: 14:30"
                 );
             }
         }
