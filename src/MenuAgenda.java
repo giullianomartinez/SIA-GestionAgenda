@@ -52,7 +52,7 @@ public class MenuAgenda {
         this.formatoHora = formatoHora;
     }
 
-    // Controla el menú principal de la agenda hasta que el usuario decide salir.
+    // Controla el menú principal de la agenda hasta que el usuario decide volver al menu de inicio.
     public void iniciar() {
 
         boolean continuar = true; 
