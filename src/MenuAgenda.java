@@ -69,14 +69,18 @@ public class MenuAgenda {
                     agregarActividad();
 
                 } else if (opcion.equals("2")) {
+                    
+                    buscarActividad();
+                    
+                } else if (opcion.equals("3")) {
 
                     sistema.mostrarDias();
 
-                } else if (opcion.equals("3")) {
+                } else if (opcion.equals("4")) {
                     
                     mostrarActividadesPorTipo();
                     
-                } else if (opcion.equals("4")) {
+                } else if (opcion.equals("5")) {
 
                     continuar = false;
 
@@ -95,9 +99,10 @@ public class MenuAgenda {
         System.out.println();
         System.out.println("===== AGENDA =====");
         System.out.println("1. Agregar actividad");
-        System.out.println("2. Mostrar agenda");
-        System.out.println("3. Mostrar actividades por tipo");
-        System.out.println("4. Volver al menu de inicio");
+        System.out.println("2. Buscar actividad");
+        System.out.println("3. Mostrar agenda");
+        System.out.println("4. Mostrar actividades por tipo");
+        System.out.println("5. Volver al menu de inicio");
         System.out.print("Seleccione una opcion: ");
     }
 
@@ -173,6 +178,51 @@ public class MenuAgenda {
         sistema.agregarActividad(fecha, actividad);
 
         System.out.println("\nActividad agregada correctamente.");
+    }
+
+    // Permite buscar una actividad utilizando su ID o su título.
+    public void buscarActividad() throws IOException {
+    
+        System.out.println();
+        System.out.println("Buscar actividad por:");
+        System.out.println("1. ID");
+        System.out.println("2. Titulo");
+        System.out.print("Seleccione una opcion: ");
+    
+        String opcion = lector.readLine();
+    
+        Actividad actividad = null;
+    
+        if (opcion.equals("1")) {
+    
+            System.out.print("Ingrese ID de la actividad: ");
+    
+            try {
+                int id = Integer.parseInt(lector.readLine());
+                actividad = sistema.buscarActividad(id);
+    
+            } catch (NumberFormatException error) {
+                System.out.println("\nEl ID debe ser un numero.");
+                return;
+            }
+    
+        } else if (opcion.equals("2")) {
+    
+            String titulo = leerTexto("Ingrese titulo: ");
+            actividad = sistema.buscarActividad(titulo);
+    
+        } else {
+    
+            System.out.println("\nOpcion no valida.");
+            return;
+        }
+    
+        if (actividad == null) {
+            System.out.println("\nActividad no encontrada.");
+        } else {
+            System.out.println("\nActividad encontrada:");
+            System.out.println(actividad.mostrarActividad());
+        }
     }
 
     // Crea la subclase de Actividad correspondiente al tipo seleccionado por el usuario.
