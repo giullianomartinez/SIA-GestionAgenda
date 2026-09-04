@@ -35,7 +35,7 @@ public class DiaAgenda {
     // Muestra todas las actividades registradas en este día.
     public void mostrarActividades() {
         if (actividades.isEmpty()) {
-            System.out.println("No hay actividades registradas.");
+            System.out.println("\nNo hay actividades registradas.");
             return;
         }
 
