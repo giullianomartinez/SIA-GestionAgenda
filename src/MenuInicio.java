@@ -43,6 +43,7 @@ public class MenuInicio {
 
                 } else if (opcion.equals("2")) {
 
+                    // Se crea un sistema independiente para evitar mezclar datos de prueba con datos normales.
                     SistemaAgenda sistema = new SistemaAgenda();
                     sistema.cargarDatosIniciales();
 
