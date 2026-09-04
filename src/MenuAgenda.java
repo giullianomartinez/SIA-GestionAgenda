@@ -19,6 +19,38 @@ public class MenuAgenda {
         this.formatoHora = DateTimeFormatter.ofPattern("HH:mm"); // formatea hora para recibirla unicamente en formato Hora:Minutos
     }
 
+    public SistemaAgenda getSistema() {
+        return sistema;
+    }
+    
+    public void setSistema(SistemaAgenda sistema) {
+        this.sistema = sistema;
+    }
+    
+    public BufferedReader getLector() {
+        return lector;
+    }
+    
+    public void setLector(BufferedReader lector) {
+        this.lector = lector;
+    }
+    
+    public DateTimeFormatter getFormatoFecha() {
+        return formatoFecha;
+    }
+    
+    public void setFormatoFecha(DateTimeFormatter formatoFecha) {
+        this.formatoFecha = formatoFecha;
+    }
+    
+    public DateTimeFormatter getFormatoHora() {
+        return formatoHora;
+    }
+    
+    public void setFormatoHora(DateTimeFormatter formatoHora) {
+        this.formatoHora = formatoHora;
+    }
+
     public void iniciar() {
 
         boolean continuar = true;  // Variable utilizada para el while. Termina el bucle cuando el usuario ingresa opcion (3) Salir.
