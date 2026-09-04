@@ -10,6 +10,14 @@ public class MenuInicio {
         this.lector = new BufferedReader(new InputStreamReader(System.in));
     }
 
+    public BufferedReader getLector() {
+        return lector;
+    }
+    
+    public void setLector(BufferedReader lector) {
+        this.lector = lector;
+    }
+
     public void iniciar() {
 
         boolean continuar = true;
