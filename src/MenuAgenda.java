@@ -73,6 +73,10 @@ public class MenuAgenda {
                     sistema.mostrarDias();
 
                 } else if (opcion.equals("3")) {
+                    
+                    mostrarActividadesPorTipo();
+                    
+                } else if (opcion.equals("4")) {
 
                     continuar = false;
 
@@ -92,7 +96,8 @@ public class MenuAgenda {
         System.out.println("===== AGENDA =====");
         System.out.println("1. Agregar actividad");
         System.out.println("2. Mostrar agenda");
-        System.out.println("3. Volver al menu de inicio");
+        System.out.println("3. Mostrar actividades por tipo");
+        System.out.println("4. Volver al menu de inicio");
         System.out.print("Seleccione una opcion: ");
     }
 
