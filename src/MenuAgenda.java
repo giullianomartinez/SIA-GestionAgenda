@@ -53,7 +53,7 @@ public class MenuAgenda {
 
     public void iniciar() {
 
-        boolean continuar = true;  // Variable utilizada para el while. Termina el bucle cuando el usuario ingresa opcion (3) Salir.
+        boolean continuar = true; 
 
         while (continuar) {
 
