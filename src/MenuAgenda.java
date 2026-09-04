@@ -15,8 +15,9 @@ public class MenuAgenda {
     public MenuAgenda(SistemaAgenda sistema, BufferedReader lector) {
         this.sistema = sistema;
         this.lector = lector;
-        this.formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy"); // formatea fecha para recibirla unicamente con /
-        this.formatoHora = DateTimeFormatter.ofPattern("HH:mm"); // formatea hora para recibirla unicamente en formato Hora:Minutos
+        // Formatos utilizados para interpretar las fechas y horas ingresadas por el usuario.
+        this.formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        this.formatoHora = DateTimeFormatter.ofPattern("HH:mm");
     }
 
     public SistemaAgenda getSistema() {
@@ -51,6 +52,7 @@ public class MenuAgenda {
         this.formatoHora = formatoHora;
     }
 
+    // Controla el menú principal de la agenda hasta que el usuario decide salir.
     public void iniciar() {
 
         boolean continuar = true; 
@@ -94,6 +96,7 @@ public class MenuAgenda {
         System.out.print("Seleccione una opcion: ");
     }
 
+    // Solicita los datos necesarios al usuario y registra una nueva actividad.
     public void agregarActividad() throws IOException {
 
         System.out.println();
@@ -124,6 +127,7 @@ public class MenuAgenda {
         System.out.println("Actividad agregada correctamente.");
     }
 
+    // Crea la subclase de Actividad correspondiente al tipo seleccionado por el usuario.
     public Actividad crearActividadPorTipo(int id, String tipo,
                                            String titulo,
                                            LocalTime horaInicio,
@@ -182,6 +186,7 @@ public class MenuAgenda {
         );
     }
 
+    // Lee texto desde consola y evita aceptar entradas vacías.
     public String leerTexto(String mensaje) throws IOException {
 
         System.out.print(mensaje);
@@ -197,6 +202,7 @@ public class MenuAgenda {
         return texto;
     }
 
+    // Solicita una fecha hasta que el usuario ingrese un valor con formato válido.
     public LocalDate leerFecha(String mensaje) throws IOException {
 
         boolean fechaValida = false; 
@@ -223,6 +229,7 @@ public class MenuAgenda {
         return fecha;
     }
 
+    // Solicita una hora hasta que el usuario ingrese un valor con formato válido.
     public LocalTime leerHora(String mensaje) throws IOException {
 
         boolean horaValida = false;
