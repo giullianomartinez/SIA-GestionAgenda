@@ -18,6 +18,8 @@ public class MenuInicio {
         this.lector = lector;
     }
 
+    // Permite elegir entre modo normal, modo prueba o finalizar el programa.
+    // Cada modo crea su propia instancia de SistemaAgenda.
     public void iniciar() {
 
         boolean continuar = true;
@@ -36,6 +38,7 @@ public class MenuInicio {
 
                 if (opcion.equals("1")) {
 
+                    // El modo normal inicia con una agenda vacía.
                     SistemaAgenda sistema = new SistemaAgenda();
                     MenuAgenda menu = new MenuAgenda(sistema, lector);
 
@@ -44,6 +47,7 @@ public class MenuInicio {
                 } else if (opcion.equals("2")) {
 
                     // Se crea un sistema independiente para evitar mezclar datos de prueba con datos normales.
+                    // El modo prueba utiliza una agenda independiente con datos precargados.
                     SistemaAgenda sistema = new SistemaAgenda();
                     sistema.cargarDatosIniciales();
 
