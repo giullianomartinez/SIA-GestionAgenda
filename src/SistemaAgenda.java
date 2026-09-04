@@ -39,6 +39,7 @@ public class SistemaAgenda {
         this.siguienteId = siguienteId;
     }
 
+    // Genera un identificador único y aumenta el contador para la siguiente actividad.
     public int generarIdActividad() {
         int idGenerado = siguienteId;
         siguienteId = siguienteId + 1;
@@ -49,6 +50,9 @@ public class SistemaAgenda {
         dias.put(dia.getFecha(), dia);
     }
 
+
+    // Agrega una actividad a una fecha. Si el día no existe en la agenda,
+    // se crea automáticamente antes de registrar la actividad.
     public void agregarActividad(LocalDate fecha, Actividad actividad) {
         DiaAgenda dia = dias.get(fecha);
 
@@ -60,6 +64,7 @@ public class SistemaAgenda {
         dia.agregarActividad(actividad);
     }
 
+    // Recorre los días de la agenda en orden cronológico y muestra sus actividades.
     public void mostrarDias() {
         if (dias.isEmpty()) {
             System.out.println("La agenda no tiene dias registrados.");
@@ -73,7 +78,7 @@ public class SistemaAgenda {
         }
     }
 
-    // Carga actividades utilizadas exclusivamente para ejecutar el sistema en modo prueba.
+    // Carga datos utilizados exclusivamente para probar las funcionalidades del sistema.
     public void cargarDatosIniciales() {
 
         LocalDate fecha1 = LocalDate.of(2026, 9, 8);
