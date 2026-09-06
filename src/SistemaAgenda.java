@@ -58,15 +58,13 @@ public class SistemaAgenda {
     }
 
     public String buscarHorarioDisponible(LocalDate fecha, int duracionMinutos) {
-        if(duracionMinutos <= 0 || duracionMinutos > 24*60) {
-            return "Duración inválida.";
+        if (duracionMinutos <= 0 || duracionMinutos > 24 * 60) {
+            return "Duracion invalida.";
         }
 
         DiaAgenda dia = dias.get(fecha);
         if (dia == null) {
-            LocalTime Inicio = LocalTime.of(0, 0);
-            LocalTime Fin = Inicio.plusMinutes(duracionMinutos);
-            return "Horario disponible: " + Inicio + " - " + Fin;
+            return "El dia completo esta disponible (00:00 a 23:59).";
         }
 
         return dia.buscarHorarioDisponible(duracionMinutos);

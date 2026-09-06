@@ -43,14 +43,16 @@ public class DiaAgenda {
         }
     }
 
-    public String buscarHorarioDisponible(int duracionMinutos) {
-        if(duracionMinutos <= 0 || duracionMinutos > 24*60) {
-            return "Duración inválida.";
+public String buscarHorarioDisponible(int duracionMinutos) {
+        if (duracionMinutos <= 0 || duracionMinutos > 24 * 60) {
+            return "Duracion invalida.";
         }
 
-        LocalTime hora = LocalTime.of(0, 0);
+        StringBuilder horarios = new StringBuilder();
+        LocalTime hora = LocalTime.of(0, 0); // O puedes cambiarlo a of(8, 0) si prefieres horario hábil
+        boolean encontrado = false;
 
-        while(hora.getHour() * 60 + hora.getMinute() + duracionMinutos <= 24 * 60) {
+        while (hora.getHour() * 60 + hora.getMinute() + duracionMinutos <= 24 * 60) {
             LocalTime horaFin = hora.plusMinutes(duracionMinutos);
             boolean disponible = true;
 
@@ -58,18 +60,29 @@ public class DiaAgenda {
                 Actividad actividad = actividades.get(i);
                 if (actividad.getHoraInicio().isBefore(horaFin) && actividad.getHoraFin().isAfter(hora)) {
                     disponible = false;
+                    // Salta directamente al fin de la actividad en conflicto para acelerar
+                    hora = actividad.getHoraFin();
                     break;
                 }
             }
 
             if (disponible) {
-                return "Horario disponible: " + hora + " - " + horaFin;
+                horarios.append("- ").append(hora).append(" a ").append(horaFin).append("\n");
+                encontrado = true;
+                // Avanza al siguiente bloque de igual duración (o de a 30/60 min)
+                hora = horaFin;
             }
 
-            hora = hora.plusMinutes(1);
+            if (hora.equals(LocalTime.MIDNIGHT) && encontrado) {
+                break;
+            }
         }
 
-        return "Horario disponible.";
+        if (!encontrado) {
+            return "No hay horarios disponibles para la duracion solicitada.";
+        }
+
+        return "Horarios disponibles:\n" + horarios.toString().trim();
     }
 
     public Actividad buscarActividadPorId(int id) {
