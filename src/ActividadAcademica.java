@@ -20,7 +20,7 @@ public class ActividadAcademica extends Actividad {
         this.asignatura = asignatura;
     }
 
-    @override 
+    @Override 
     public String mostrarActividad(){
         return super.mostrarActividad() + " | Asignatura: " + asignatura;
     }
