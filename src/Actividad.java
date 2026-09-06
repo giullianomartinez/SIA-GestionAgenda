@@ -80,14 +80,14 @@ public class Actividad {
     }
 
     public void posponer(int minutos){
-        if(horaInicio != null && horaFinal != null){
+        if(horaInicio != null && horaFin != null){
             horaInicio = horaInicio.plusMinutes(minutos);
-            horaFinal = horaFinal.plusMinutes(minutos);
+            horaFin = horaFin.plusMinutes(minutos);
         }
     }
-    public void posponer(localTime horaInicio, localTime horaFinal){
+    public void posponer(LocalTime horaInicio, LocalTime horaFin){
         this.horaInicio = horaInicio;
-        this.horaFinal = horaFinal;
+        this.horaFin = horaFin;
     }
 
     
