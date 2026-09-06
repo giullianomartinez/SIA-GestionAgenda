@@ -181,17 +181,17 @@ public class MenuAgenda {
         return hora;
     }
 
-    public void buscarHorarioDisponible() throws IOException {
+public void buscarHorarioDisponible() throws IOException {
         System.out.println();
         System.out.println("----- BUSCAR HORARIO DISPONIBLE -----");
         LocalDate fecha = leerFecha("Ingrese fecha (dd/MM/yyyy): ");
 
         int duracionMinutos = 0;
-        while(duracionMinutos <= 0 || duracionMinutos > 1440) {
-            System.out.print("Ingrese duracion (en minutos): ");
+        while (duracionMinutos <= 0 || duracionMinutos > 1440) {
+            String duracionTexto = leerTexto("Ingrese duracion (en minutos): ");
             try {
                 duracionMinutos = Integer.parseInt(duracionTexto);
-                if(duracionMinutos <= 0 || duracionMinutos > 1440) {
+                if (duracionMinutos <= 0 || duracionMinutos > 1440) {
                     System.out.println("La duracion debe ser un numero positivo y no mayor a 1440 minutos.");
                 }
             } catch (NumberFormatException error) {
@@ -259,13 +259,13 @@ public class MenuAgenda {
         }
     }
 
-    public void editarActividad() throws IOException {
+public void editarActividad() throws IOException {
         System.out.println();
         System.out.println("----- EDITAR ACTIVIDAD -----");
         int id = leerEntero("Ingrese ID de la actividad a editar: ");
         
         Actividad act = sistema.buscarActividadPorId(id);
-        if(act == null){
+        if (act == null) {
             System.out.println("No se encontró la actividad con el ID especificado: " + id);
             return;
         }
@@ -276,7 +276,7 @@ public class MenuAgenda {
         LocalTime nuevaHoraFin = leerHora("Ingrese nueva hora de fin (HH:mm): ");
         String nuevaDescripcion = leerTexto("Ingrese nueva descripcion: ");
 
-        act.setTitutlo(nuevoTitulo);
+        act.setTitulo(nuevoTitulo);
         act.setHoraInicio(nuevaHoraInicio);
         act.setHoraFin(nuevaHoraFin);
         act.setDescripcion(nuevaDescripcion);
@@ -292,7 +292,7 @@ public class MenuAgenda {
         if (eliminada) {
             System.out.println("Actividad eliminada correctamente.");
         } else {
-            System.out.println("No se pudo encontrar ninguna antividad con el ID especificado: " + id);
+            System.out.println("No se pudo encontrar ninguna actividad con el ID especificado: " + id);
         }
     }
 

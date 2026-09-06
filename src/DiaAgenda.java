@@ -41,4 +41,56 @@ public class DiaAgenda {
             System.out.println(actividad.mostrarActividad());
         }
     }
+
+    public String buscarHorarioDisponible(int duracionMinutos) {
+        if(duracionMinutos <= 0 || duracionMinutos > 24*60) {
+            return "Duración inválida.";
+        }
+
+        LocalTime hora = LocalTime.of(0, 0);
+
+        while(hora.getHour() * 60 + hora.getMinute() + duracionMinutos <= 24 * 60) {
+            LocalTime horaFin = hora.plusMinutes(duracionMinutos);
+            boolean disponible = true;
+
+            for (int i = 0; i < actividades.size(); i++) {
+                Actividad actividad = actividades.get(i);
+                if (actividad.getHoraInicio().isBefore(horaFin) && actividad.getHoraFin().isAfter(hora)) {
+                    disponible = false;
+                    break;
+                }
+            }
+
+            if (disponible) {
+                return "Horario disponible: " + hora + " - " + horaFin;
+            }
+
+            hora = hora.plusMinutes(1);
+        }
+
+        return "Horario disponible.";
+    }
+
+    public Actividad buscarActividadPorId(int id) {
+        for (int i = 0; i < actividades.size(); i++) {
+            Actividad act = actividades.get(i);
+            if (act.getId() == id) {
+                return act;
+            }
+        }
+        return null;
+    }
+
+    public boolean eliminarActividadPorId(int id) {
+        for (int i = 0; i < actividades.size(); i++) {
+            Actividad act = actividades.get(i);
+            if (act.getId() == id) {
+                actividades.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    
 }
