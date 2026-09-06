@@ -34,6 +34,20 @@ public class MenuAgenda {
                 } else if (opcion.equals("2")) {
                     sistema.mostrarDias();
                 } else if (opcion.equals("3")) {
+                    buscarDia();
+                } else if (opcion.equals("4")) {
+                    editarDia();
+                } else if (opcion.equals("5")) {
+                    eliminarDia();
+                } else if (opcion.equals("6")) {
+                    buscarActividad();
+                } else if (opcion.equals("7")) {
+                    editarActividad();
+                } else if (opcion.equals("8")) {
+                    eliminarActividad();
+                } else if (opcion.equals("9")) {
+                    buscarHorarioDisponible();
+                } else if (opcion.equals("10")) {
                     continuar = false;
                     System.out.println("Programa finalizado.");
                 } else {
@@ -50,7 +64,14 @@ public class MenuAgenda {
         System.out.println("===== SISTEMA DE AGENDA =====");
         System.out.println("1. Agregar actividad");
         System.out.println("2. Mostrar agenda");
-        System.out.println("3. Salir");
+        System.out.println("3. Buscar dia");
+        System.out.println("4. Editar dia");
+        System.out.println("5. Eliminar dia");
+        System.out.println("6. Buscar actividad");
+        System.out.println("7. Editar actividad");
+        System.out.println("8. Eliminar actividad");
+        System.out.println("9. Buscar horario disponible");
+        System.out.println("10. Salir");
         System.out.print("Seleccione una opcion: ");
     }
 
@@ -159,4 +180,132 @@ public class MenuAgenda {
 
         return hora;
     }
+
+    public void buscarHorarioDisponible() throws IOException {
+        System.out.println();
+        System.out.println("----- BUSCAR HORARIO DISPONIBLE -----");
+        LocalDate fecha = leerFecha("Ingrese fecha (dd/MM/yyyy): ");
+
+        int duracionMinutos = 0;
+        while(duracionMinutos <= 0 || duracionMinutos > 1440) {
+            System.out.print("Ingrese duracion (en minutos): ");
+            try {
+                duracionMinutos = Integer.parseInt(duracionTexto);
+                if(duracionMinutos <= 0 || duracionMinutos > 1440) {
+                    System.out.println("La duracion debe ser un numero positivo y no mayor a 1440 minutos.");
+                }
+            } catch (NumberFormatException error) {
+                System.out.println("Duracion invalida. Ingrese un numero entero.");
+            }
+        }
+        
+        String resultado = sistema.buscarHorarioDisponible(fecha, duracionMinutos);
+        System.out.println(resultado);
+    }
+
+    public void buscarDia() throws IOException {
+        System.out.println();
+        System.out.println("----- BUSCAR DIA -----");
+        LocalDate fecha = leerFecha("Ingrese fecha (dd/MM/yyyy): ");
+
+        DiaAgenda dia = sistema.getDias().get(fecha);
+        if (dia != null) {
+            System.out.println("Fecha: " + fecha.format(formatoFecha) + ":");
+            dia.mostrarActividades();
+        } else {
+            System.out.println("No se encontró el dia solicitado");
+        }
+    }
+
+    public void editarDia() throws IOException {
+        System.out.println();
+        System.out.println("----- EDITAR DIA -----");
+        LocalDate fecha = leerFecha("Ingrese fecha del dia a editar (dd/MM/yyyy): ");
+        LocalDate nuevaFecha = leerFecha("Ingrese nueva fecha (dd/MM/yyyy): ");
+
+        boolean editado = sistema.editarFechaDia(fecha, nuevaFecha);
+        if (editado) {
+            System.out.println("Fecha del dia editada correctamente.");
+        } else {
+            System.out.println("ERROR: No se pudo editar la fecha del dia.");
+        }
+    }
+
+    public void eliminarDia() throws IOException {
+        System.out.println();
+        System.out.println("----- ELIMINAR DIA -----");
+        LocalDate fecha = leerFecha("Ingrese fecha del dia a eliminar (dd/MM/yyyy): ");
+
+        boolean eliminado = sistema.eliminarDia(fecha);
+        if (eliminado) {
+            System.out.println("Dia eliminado correctamente.");
+        } else {
+            System.out.println("ERROR: No se pudo eliminar el dia.");
+        }
+    }
+
+    public void buscarActividad() throws IOException {
+        System.out.println();
+        System.out.println("----- BUSCAR ACTIVIDAD -----");
+        //En este caso haré con id, pero posiblemente cambie en un futuro
+        int id = leerEntero("Ingrese ID de la actividad: ");
+        
+        Actividad act = sistema.buscarActividadPorId(id);
+        if (act != null) {
+            System.out.println("Actividad encontrada:");
+            System.out.println(act.mostrarActividad());
+        } else {
+            System.out.println("No se encontró la actividad con el ID especificado." + id);
+        }
+    }
+
+    public void editarActividad() throws IOException {
+        System.out.println();
+        System.out.println("----- EDITAR ACTIVIDAD -----");
+        int id = leerEntero("Ingrese ID de la actividad a editar: ");
+        
+        Actividad act = sistema.buscarActividadPorId(id);
+        if(act == null){
+            System.out.println("No se encontró la actividad con el ID especificado: " + id);
+            return;
+        }
+
+        System.out.println("Actividad encontrada: " + act.mostrarActividad());
+        String nuevoTitulo = leerTexto("Ingrese nuevo titulo: ");
+        LocalTime nuevaHoraInicio = leerHora("Ingrese nueva hora de inicio (HH:mm): ");
+        LocalTime nuevaHoraFin = leerHora("Ingrese nueva hora de fin (HH:mm): ");
+        String nuevaDescripcion = leerTexto("Ingrese nueva descripcion: ");
+
+        act.setTitutlo(nuevoTitulo);
+        act.setHoraInicio(nuevaHoraInicio);
+        act.setHoraFin(nuevaHoraFin);
+        act.setDescripcion(nuevaDescripcion);
+        System.out.println("Actividad editada correctamente.");
+    }
+
+    public void eliminarActividad() throws IOException {
+        System.out.println();
+        System.out.println("----- ELIMINAR ACTIVIDAD -----");
+        int id = leerEntero("Ingrese ID de la actividad a eliminar: ");
+        
+        boolean eliminada = sistema.eliminarActividadPorId(id);
+        if (eliminada) {
+            System.out.println("Actividad eliminada correctamente.");
+        } else {
+            System.out.println("No se pudo encontrar ninguna antividad con el ID especificado: " + id);
+        }
+    }
+
+    public int leerEntero(String mensaje) throws IOException {
+        while(true) {
+            String texto = leerTexto(mensaje);
+            try {
+                return Integer.parseInt(texto);
+            } catch (NumberFormatException error) {
+                System.out.println("Entrada invalida. Ingrese un numero entero.");
+            }
+        }
+    }
 }
+
+
