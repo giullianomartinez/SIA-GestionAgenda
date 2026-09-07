@@ -67,63 +67,56 @@ public class DiaAgenda {
 
     // Busca bloques disponibles del tamaño solicitado dentro del dia.
     public String buscarHorarioDisponible(int duracionMinutos) {
-
+    
         if (duracionMinutos <= 0 || duracionMinutos > 24 * 60) {
             return "Duracion invalida.";
         }
-
+    
         StringBuilder horarios = new StringBuilder();
-
-        LocalTime hora = LocalTime.of(0, 0);
-
+        int minutoActual = 0;
         boolean encontrado = false;
-
-        while (hora.getHour() * 60
-                + hora.getMinute()
-                + duracionMinutos <= 24 * 60) {
-
-            LocalTime horaFin = hora.plusMinutes(duracionMinutos);
-
+    
+        while (minutoActual + duracionMinutos <= 24 * 60) {
+    
+            int minutoFin = minutoActual + duracionMinutos;
             boolean disponible = true;
-
+    
             for (int i = 0; i < actividades.size(); i++) {
-
+    
                 Actividad actividad = actividades.get(i);
-
-                if (actividad.getHoraInicio().isBefore(horaFin)
-                        && actividad.getHoraFin().isAfter(hora)) {
-
+    
+                int inicioActividad = actividad.getHoraInicio().getHour() * 60
+                        + actividad.getHoraInicio().getMinute();
+    
+                int finActividad = actividad.getHoraFin().getHour() * 60
+                        + actividad.getHoraFin().getMinute();
+    
+                if (inicioActividad < minutoFin
+                        && finActividad > minutoActual) {
+    
                     disponible = false;
-
-                    hora = actividad.getHoraFin();
-
+                    minutoActual = finActividad;
                     break;
                 }
             }
-
+    
             if (disponible) {
-
+    
                 horarios.append("- ")
-                        .append(hora)
+                        .append(formatearMinutos(minutoActual))
                         .append(" a ")
-                        .append(horaFin)
+                        .append(formatearMinutos(minutoFin))
                         .append("\n");
-
+    
                 encontrado = true;
-
-                hora = horaFin;
-            }
-
-            // LocalTime vuelve a 00:00 al superar las 23:59.
-            if (hora.equals(LocalTime.MIDNIGHT) && encontrado) {
-                break;
+                minutoActual = minutoFin;
             }
         }
-
+    
         if (!encontrado) {
             return "No hay horarios disponibles para la duracion solicitada.";
         }
-
+    
         return "Horarios disponibles:\n"
                 + horarios.toString().trim();
     }
