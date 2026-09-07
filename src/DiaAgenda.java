@@ -2,7 +2,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-
 public class DiaAgenda {
 
     private LocalDate fecha;
@@ -23,8 +22,15 @@ public class DiaAgenda {
     }
 
     public void agregarActividad(Actividad actividad) {
-
         actividades.add(actividad);
+    }
+
+    public int cantidadActividades() {
+        return actividades.size();
+    }
+
+    public Actividad obtenerActividad(int posicion) {
+        return actividades.get(posicion);
     }
 
     // Muestra todas las actividades registradas en este dia.
