@@ -1,27 +1,13 @@
 import java.time.LocalTime;
 
-public class ActividadAcademica
-        extends Actividad {
+public class ActividadAcademica extends Actividad {
 
     private String asignatura;
 
-    public ActividadAcademica(
-            int id,
-            String titulo,
-            LocalTime horaInicio,
-            LocalTime horaFin,
-            String descripcion,
-            String asignatura) {
+    public ActividadAcademica(int id, String titulo, LocalTime horaInicio,
+                              LocalTime horaFin, String descripcion, String asignatura) {
 
-        super(
-                id,
-                titulo,
-                horaInicio,
-                horaFin,
-                descripcion,
-                "Academica"
-        );
-
+        super(id, titulo, horaInicio, horaFin, descripcion, "Academica");
         this.asignatura = asignatura;
     }
 
@@ -29,30 +15,22 @@ public class ActividadAcademica
         return asignatura;
     }
 
-    public void setAsignatura(
-            String asignatura) {
-
+    public void setAsignatura(String asignatura) {
         this.asignatura = asignatura;
     }
 
     @Override
     public String getNombreDatoEspecifico() {
-
         return "asignatura";
     }
 
     @Override
-    public void setDatoEspecifico(
-            String dato) {
-
+    public void setDatoEspecifico(String dato) {
         setAsignatura(dato);
     }
 
     @Override
     public String mostrarActividad() {
-
-        return super.mostrarActividad()
-                + " | Asignatura: "
-                + asignatura;
+        return super.mostrarActividad() + " | Asignatura: " + asignatura;
     }
 }
