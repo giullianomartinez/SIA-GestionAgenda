@@ -9,16 +9,28 @@ public class Actividad {
     private String descripcion;
     private String tipoActividad;
 
-    public Actividad(int id, String titulo, LocalTime horaInicio,
-                     LocalTime horaFin, String descripcion,
-                     String tipoActividad) {
+    public Actividad(
+            int id,
+            String titulo,
+            LocalTime horaInicio,
+            LocalTime horaFin,
+            String descripcion,
+            String tipoActividad) {
 
         this.id = id;
         this.titulo = titulo;
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
         this.descripcion = descripcion;
         this.tipoActividad = tipoActividad;
+
+        if (!actualizarHorario(
+                horaInicio,
+                horaFin)) {
+
+            throw new IllegalArgumentException(
+                    "La hora de fin debe ser "
+                    + "posterior a la hora de inicio."
+            );
+        }
     }
 
     public int getId() {
@@ -33,7 +45,9 @@ public class Actividad {
         return titulo;
     }
 
-    public void setTitulo(String titulo) {
+    public void setTitulo(
+            String titulo) {
+
         this.titulo = titulo;
     }
 
@@ -41,7 +55,20 @@ public class Actividad {
         return horaInicio;
     }
 
-    public void setHoraInicio(LocalTime horaInicio) {
+    public void setHoraInicio(
+            LocalTime horaInicio) {
+
+        if (horaInicio == null
+                || (horaFin != null
+                && !horaFin.isAfter(
+                        horaInicio))) {
+
+            throw new IllegalArgumentException(
+                    "La hora de inicio debe ser "
+                    + "anterior a la hora de fin."
+            );
+        }
+
         this.horaInicio = horaInicio;
     }
 
@@ -49,7 +76,20 @@ public class Actividad {
         return horaFin;
     }
 
-    public void setHoraFin(LocalTime horaFin) {
+    public void setHoraFin(
+            LocalTime horaFin) {
+
+        if (horaFin == null
+                || (horaInicio != null
+                && !horaFin.isAfter(
+                        horaInicio))) {
+
+            throw new IllegalArgumentException(
+                    "La hora de fin debe ser "
+                    + "posterior a la hora de inicio."
+            );
+        }
+
         this.horaFin = horaFin;
     }
 
@@ -57,7 +97,9 @@ public class Actividad {
         return descripcion;
     }
 
-    public void setDescripcion(String descripcion) {
+    public void setDescripcion(
+            String descripcion) {
+
         this.descripcion = descripcion;
     }
 
@@ -65,33 +107,98 @@ public class Actividad {
         return tipoActividad;
     }
 
-    public void setTipoActividad(String tipoActividad) {
+    public void setTipoActividad(
+            String tipoActividad) {
+
         this.tipoActividad = tipoActividad;
     }
 
-    // Devuelve la informacion principal de la actividad en un formato legible.
+    // Cambia las dos horas al mismo tiempo
+    // y evita almacenar un horario invalido.
+    public boolean actualizarHorario(
+            LocalTime nuevaHoraInicio,
+            LocalTime nuevaHoraFin) {
+
+        if (nuevaHoraInicio == null
+                || nuevaHoraFin == null
+                || !nuevaHoraFin.isAfter(
+                        nuevaHoraInicio)) {
+
+            return false;
+        }
+
+        this.horaInicio = nuevaHoraInicio;
+        this.horaFin = nuevaHoraFin;
+
+        return true;
+    }
+
+    // Indica el nombre del atributo propio
+    // que posee cada subclase.
+    public String getNombreDatoEspecifico() {
+
+        return "dato especifico";
+    }
+
+    // Permite modificar el atributo propio
+    // utilizando polimorfismo.
+    public void setDatoEspecifico(
+            String dato) {
+
+        // Las subclases sobrescriben
+        // este metodo.
+    }
+
+    // Devuelve la informacion principal
+    // de la actividad.
     public String mostrarActividad() {
 
-        String texto = horaInicio + " - " + horaFin
-                + " | " + titulo
-                + " | " + getTipoActividad()
-                + " | " + descripcion;
+        String texto
+                = horaInicio
+                + " - "
+                + horaFin
+                + " | "
+                + titulo
+                + " | "
+                + getTipoActividad()
+                + " | "
+                + descripcion;
 
         return texto;
     }
 
-    // Posponen la actividad utilizando sobrecarga de metodos.
-    public void posponer(int minutos) {
+    // Posponen la actividad utilizando
+    // sobrecarga de metodos.
+    public void posponer(
+            int minutos) {
 
-        if (horaInicio != null && horaFin != null) {
-            horaInicio = horaInicio.plusMinutes(minutos);
-            horaFin = horaFin.plusMinutes(minutos);
+        if (horaInicio != null
+                && horaFin != null) {
+
+            LocalTime nuevaHoraInicio
+                    = horaInicio.plusMinutes(
+                            minutos
+                    );
+
+            LocalTime nuevaHoraFin
+                    = horaFin.plusMinutes(
+                            minutos
+                    );
+
+            actualizarHorario(
+                    nuevaHoraInicio,
+                    nuevaHoraFin
+            );
         }
     }
 
-    public void posponer(LocalTime horaInicio, LocalTime horaFin) {
+    public void posponer(
+            LocalTime horaInicio,
+            LocalTime horaFin) {
 
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
+        actualizarHorario(
+                horaInicio,
+                horaFin
+        );
     }
 }
