@@ -19,13 +19,6 @@ public class DiaAgenda {
         this.fecha = fecha;
     }
 
-    public ArrayList<Actividad> getActividades() {
-        return actividades;
-    }
-
-    public void setActividades(ArrayList<Actividad> actividades) {
-        this.actividades = actividades;
-    }
 
     // Agrega una actividad a la lista de actividades correspondientes a este día.
     public void agregarActividad(Actividad actividad) {
