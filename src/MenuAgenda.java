@@ -61,43 +61,24 @@ public class MenuAgenda {
             mostrarOpciones();
 
             try {
-
                 String opcion = lector.readLine();
 
                 if (opcion.equals("1")) {
-                    agregarActividad();
-
-                } else if (opcion.equals("2")) {
-                    buscarActividad();
-
-                } else if (opcion.equals("3")) {
                     mostrarAgenda();
 
-                } else if (opcion.equals("4")) {
-                    mostrarActividadesPorTipo();
-
-                } else if (opcion.equals("5")) {
-                    buscarDia();
-
-                } else if (opcion.equals("6")) {
-                    editarDia();
-
-                } else if (opcion.equals("7")) {
-                    eliminarDia();
-
-                } else if (opcion.equals("8")) {
-                    editarActividad();
-
-                } else if (opcion.equals("9")) {
-                    eliminarActividad();
-
-                } else if (opcion.equals("10")) {
-                    buscarHorarioDisponible();
-
-                } else if (opcion.equals("11")) {
+                } else if (opcion.equals("2")) {
                     sistema.mostrarHistorial();
 
-                } else if (opcion.equals("12")) {
+                } else if (opcion.equals("3")) {
+                    mostrarOpcionesActividades();
+
+                } else if (opcion.equals("4")) {
+                    mostrarOpcionesDias();
+
+                } else if (opcion.equals("5")) {
+                    buscarHorarioDisponible();
+
+                } else if (opcion.equals("6")) {
                     continuar = false;
 
                 } else {
@@ -114,20 +95,90 @@ public class MenuAgenda {
 
         System.out.println();
         System.out.println("===== AGENDA =====");
-        System.out.println("1. Agregar actividad");
-        System.out.println("2. Buscar actividad");
-        System.out.println("3. Mostrar agenda");
-        System.out.println("4. Mostrar actividades por tipo");
-        System.out.println("5. Buscar dia");
-        System.out.println("6. Editar dia");
-        System.out.println("7. Eliminar dia");
-        System.out.println("8. Editar actividad");
-        System.out.println("9. Eliminar actividad");
-        System.out.println("10. Buscar horario disponible");
-        System.out.println("11. Mostrar historial");
-        System.out.println("12. Volver al menu de inicio");
+        System.out.println("1. Mostrar agenda");
+        System.out.println("2. Mostrar historial");
+        System.out.println("3. Gestionar actividades");
+        System.out.println("4. Gestionar dias");
+        System.out.println("5. Buscar horario disponible");
+        System.out.println("6. Volver al menu de inicio");
 
         System.out.print("Seleccione una opcion: ");
+    }
+
+    public void mostrarOpcionesActividades() throws IOException {
+
+        boolean continuar = true;
+
+        while (continuar) {
+
+            System.out.println();
+            System.out.println("===== ACTIVIDADES =====");
+            System.out.println("1. Agregar actividad");
+            System.out.println("2. Buscar actividad");
+            System.out.println("3. Mostrar actividades por tipo");
+            System.out.println("4. Editar actividad");
+            System.out.println("5. Eliminar actividad");
+            System.out.println("6. Volver");
+
+            System.out.print("Seleccione una opcion: ");
+            String opcion = lector.readLine();
+
+            if (opcion.equals("1")) {
+                agregarActividad();
+
+            } else if (opcion.equals("2")) {
+                buscarActividad();
+
+            } else if (opcion.equals("3")) {
+                mostrarActividadesPorTipo();
+
+            } else if (opcion.equals("4")) {
+                editarActividad();
+
+            } else if (opcion.equals("5")) {
+                eliminarActividad();
+
+            } else if (opcion.equals("6")) {
+                continuar = false;
+
+            } else {
+                System.out.println("\nOpcion no valida.");
+            }
+        }
+    }
+
+    public void mostrarOpcionesDias() throws IOException {
+
+        boolean continuar = true;
+
+        while (continuar) {
+
+            System.out.println();
+            System.out.println("===== DIAS =====");
+            System.out.println("1. Buscar dia");
+            System.out.println("2. Editar dia");
+            System.out.println("3. Eliminar dia");
+            System.out.println("4. Volver");
+
+            System.out.print("Seleccione una opcion: ");
+            String opcion = lector.readLine();
+
+            if (opcion.equals("1")) {
+                buscarDia();
+
+            } else if (opcion.equals("2")) {
+                editarDia();
+
+            } else if (opcion.equals("3")) {
+                eliminarDia();
+
+            } else if (opcion.equals("4")) {
+                continuar = false;
+
+            } else {
+                System.out.println("\nOpcion no valida.");
+            }
+        }
     }
 
     public void agregarActividad() throws IOException {
