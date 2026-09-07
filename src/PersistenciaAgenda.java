@@ -27,6 +27,7 @@ public class PersistenciaAgenda {
     public void cargarDatos(SistemaAgenda sistema) {
 
         try {
+
             crearArchivos();
             cargarDias(sistema);
             cargarActividades(sistema);
@@ -39,6 +40,7 @@ public class PersistenciaAgenda {
     public void guardarDatos(SistemaAgenda sistema) {
 
         try {
+
             crearArchivos();
             guardarDias(sistema);
             guardarActividades(sistema);
@@ -53,14 +55,20 @@ public class PersistenciaAgenda {
         File carpeta = new File(rutaCarpeta);
 
         if (!carpeta.exists()) {
-            carpeta.mkdir();
+
+            if (!carpeta.mkdir()) {
+                throw new IOException("No se pudo crear la carpeta data.");
+            }
         }
 
         File archivoDias = new File(rutaDias);
 
         if (!archivoDias.exists()) {
 
-            BufferedWriter escritor = new BufferedWriter(new FileWriter(archivoDias));
+            BufferedWriter escritor = new BufferedWriter(
+                    new FileWriter(archivoDias)
+            );
+
             escritor.write("fecha");
             escritor.newLine();
             escritor.close();
@@ -70,8 +78,15 @@ public class PersistenciaAgenda {
 
         if (!archivoActividades.exists()) {
 
-            BufferedWriter escritor = new BufferedWriter(new FileWriter(archivoActividades));
-            escritor.write("fecha;id;tipoActividad;titulo;horaInicio;horaFin;descripcion;datoEspecifico");
+            BufferedWriter escritor = new BufferedWriter(
+                    new FileWriter(archivoActividades)
+            );
+
+            escritor.write(
+                    "fecha;id;tipoActividad;titulo;horaInicio;"
+                            + "horaFin;descripcion;datoEspecifico"
+            );
+
             escritor.newLine();
             escritor.close();
         }
@@ -79,14 +94,19 @@ public class PersistenciaAgenda {
 
     private void guardarDias(SistemaAgenda sistema) throws IOException {
 
-        BufferedWriter escritor = new BufferedWriter(new FileWriter(rutaDias));
+        BufferedWriter escritor = new BufferedWriter(
+                new FileWriter(rutaDias)
+        );
 
         escritor.write("fecha");
         escritor.newLine();
 
         for (DiaAgenda dia : sistema.getDias().values()) {
 
-            escritor.write(dia.getFecha().format(formatoFecha));
+            escritor.write(
+                    dia.getFecha().format(formatoFecha)
+            );
+
             escritor.newLine();
         }
 
@@ -95,9 +115,15 @@ public class PersistenciaAgenda {
 
     private void guardarActividades(SistemaAgenda sistema) throws IOException {
 
-        BufferedWriter escritor = new BufferedWriter(new FileWriter(rutaActividades));
+        BufferedWriter escritor = new BufferedWriter(
+                new FileWriter(rutaActividades)
+        );
 
-        escritor.write("fecha;id;tipoActividad;titulo;horaInicio;horaFin;descripcion;datoEspecifico");
+        escritor.write(
+                "fecha;id;tipoActividad;titulo;horaInicio;"
+                        + "horaFin;descripcion;datoEspecifico"
+        );
+
         escritor.newLine();
 
         for (DiaAgenda dia : sistema.getDias().values()) {
@@ -125,7 +151,9 @@ public class PersistenciaAgenda {
 
     private void cargarDias(SistemaAgenda sistema) throws IOException {
 
-        BufferedReader lector = new BufferedReader(new FileReader(rutaDias));
+        BufferedReader lector = new BufferedReader(
+                new FileReader(rutaDias)
+        );
 
         String linea = lector.readLine();
 
@@ -135,14 +163,19 @@ public class PersistenciaAgenda {
 
                 try {
 
-                    LocalDate fecha = LocalDate.parse(linea, formatoFecha);
+                    LocalDate fecha = LocalDate.parse(
+                            linea,
+                            formatoFecha
+                    );
 
                     if (sistema.buscarDia(fecha) == null) {
                         sistema.agregarDia(new DiaAgenda(fecha));
                     }
 
                 } catch (RuntimeException error) {
-                    System.out.println("Se encontro una fecha invalida en dias.csv.");
+                    System.out.println(
+                            "Se encontro una fecha invalida en dias.csv."
+                    );
                 }
             }
         }
@@ -152,7 +185,9 @@ public class PersistenciaAgenda {
 
     private void cargarActividades(SistemaAgenda sistema) throws IOException {
 
-        BufferedReader lector = new BufferedReader(new FileReader(rutaActividades));
+        BufferedReader lector = new BufferedReader(
+                new FileReader(rutaActividades)
+        );
 
         String linea = lector.readLine();
         int mayorId = 0;
@@ -164,18 +199,36 @@ public class PersistenciaAgenda {
                 String[] datos = linea.split(";", -1);
 
                 if (datos.length != 8) {
-                    System.out.println("Se encontro una actividad invalida en actividades.csv.");
+
+                    System.out.println(
+                            "Se encontro una actividad invalida en actividades.csv."
+                    );
+
                     continue;
                 }
 
                 try {
 
-                    LocalDate fecha = LocalDate.parse(datos[0], formatoFecha);
+                    LocalDate fecha = LocalDate.parse(
+                            datos[0],
+                            formatoFecha
+                    );
+
                     int id = Integer.parseInt(datos[1]);
+
                     String tipoActividad = datos[2];
                     String titulo = datos[3];
-                    LocalTime horaInicio = LocalTime.parse(datos[4], formatoHora);
-                    LocalTime horaFin = LocalTime.parse(datos[5], formatoHora);
+
+                    LocalTime horaInicio = LocalTime.parse(
+                            datos[4],
+                            formatoHora
+                    );
+
+                    LocalTime horaFin = LocalTime.parse(
+                            datos[5],
+                            formatoHora
+                    );
+
                     String descripcion = datos[6];
                     String datoEspecifico = datos[7];
 
@@ -199,7 +252,10 @@ public class PersistenciaAgenda {
                     }
 
                 } catch (RuntimeException error) {
-                    System.out.println("Se encontro una actividad invalida en actividades.csv.");
+
+                    System.out.println(
+                            "Se encontro una actividad invalida en actividades.csv."
+                    );
                 }
             }
         }
@@ -209,9 +265,13 @@ public class PersistenciaAgenda {
         sistema.setSiguienteId(mayorId + 1);
     }
 
-    private Actividad crearActividad(int id, String tipoActividad, String titulo,
-                                     LocalTime horaInicio, LocalTime horaFin,
-                                     String descripcion, String datoEspecifico) {
+    private Actividad crearActividad(int id,
+                                     String tipoActividad,
+                                     String titulo,
+                                     LocalTime horaInicio,
+                                     LocalTime horaFin,
+                                     String descripcion,
+                                     String datoEspecifico) {
 
         if (tipoActividad.equalsIgnoreCase("Academica")) {
 
