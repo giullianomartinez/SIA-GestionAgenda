@@ -121,6 +121,19 @@ public class DiaAgenda {
                 + horarios.toString().trim();
     }
 
+    public String formatearMinutos(int minutos) {
+    
+        if (minutos == 24 * 60) {
+            return "24:00";
+        }
+    
+        int hora = minutos / 60;
+        int minuto = minutos % 60;
+    
+        return String.format("%02d:%02d", hora, minuto);
+    }
+
+    
     // Busca una actividad por ID dentro de este dia.
     public Actividad buscarActividadPorId(int id) {
 
