@@ -25,6 +25,11 @@ public class ActividadOtro extends Actividad {
     }
 
     @Override
+    public String getDatoEspecifico() {
+        return lugar;
+    }
+
+    @Override
     public void setDatoEspecifico(String dato) {
         setLugar(dato);
     }
