@@ -1,27 +1,13 @@
 import java.time.LocalTime;
 
-public class ActividadOtro
-        extends Actividad {
+public class ActividadOtro extends Actividad {
 
     private String lugar;
 
-    public ActividadOtro(
-            int id,
-            String titulo,
-            LocalTime horaInicio,
-            LocalTime horaFin,
-            String descripcion,
-            String lugar) {
+    public ActividadOtro(int id, String titulo, LocalTime horaInicio,
+                         LocalTime horaFin, String descripcion, String lugar) {
 
-        super(
-                id,
-                titulo,
-                horaInicio,
-                horaFin,
-                descripcion,
-                "Otro"
-        );
-
+        super(id, titulo, horaInicio, horaFin, descripcion, "Otro");
         this.lugar = lugar;
     }
 
@@ -29,30 +15,22 @@ public class ActividadOtro
         return lugar;
     }
 
-    public void setLugar(
-            String lugar) {
-
+    public void setLugar(String lugar) {
         this.lugar = lugar;
     }
 
     @Override
     public String getNombreDatoEspecifico() {
-
         return "lugar";
     }
 
     @Override
-    public void setDatoEspecifico(
-            String dato) {
-
+    public void setDatoEspecifico(String dato) {
         setLugar(dato);
     }
 
     @Override
     public String mostrarActividad() {
-
-        return super.mostrarActividad()
-                + " | Lugar: "
-                + lugar;
+        return super.mostrarActividad() + " | Lugar: " + lugar;
     }
 }
