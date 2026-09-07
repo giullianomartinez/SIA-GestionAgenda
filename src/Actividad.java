@@ -115,6 +115,10 @@ public class Actividad {
         return "dato especifico";
     }
 
+    public String getDatoEspecifico() {
+        return "";
+    }
+
     public void setDatoEspecifico(String dato) {
     }
 
