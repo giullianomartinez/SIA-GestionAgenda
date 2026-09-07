@@ -25,6 +25,11 @@ public class ActividadAcademica extends Actividad {
     }
 
     @Override
+    public String getDatoEspecifico() {
+        return asignatura;
+    }
+
+    @Override
     public void setDatoEspecifico(String dato) {
         setAsignatura(dato);
     }
