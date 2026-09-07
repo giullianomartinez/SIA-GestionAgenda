@@ -5,8 +5,7 @@ public class ActividadProyecto extends Actividad {
     private String nombreProyecto;
 
     public ActividadProyecto(int id, String titulo, LocalTime horaInicio,
-                             LocalTime horaFin, String descripcion,
-                             String nombreProyecto) {
+                             LocalTime horaFin, String descripcion, String nombreProyecto) {
 
         super(id, titulo, horaInicio, horaFin, descripcion, "Proyecto");
         this.nombreProyecto = nombreProyecto;
@@ -18,6 +17,21 @@ public class ActividadProyecto extends Actividad {
 
     public void setNombreProyecto(String nombreProyecto) {
         this.nombreProyecto = nombreProyecto;
+    }
+
+    @Override
+    public String getNombreDatoEspecifico() {
+        return "nombre del proyecto";
+    }
+
+    @Override
+    public String getDatoEspecifico() {
+        return nombreProyecto;
+    }
+
+    @Override
+    public void setDatoEspecifico(String dato) {
+        setNombreProyecto(dato);
     }
 
     @Override

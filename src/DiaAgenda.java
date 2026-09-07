@@ -22,8 +22,15 @@ public class DiaAgenda {
     }
 
     public void agregarActividad(Actividad actividad) {
-
         actividades.add(actividad);
+    }
+
+    public int cantidadActividades() {
+        return actividades.size();
+    }
+
+    public Actividad obtenerActividad(int posicion) {
+        return actividades.get(posicion);
     }
 
     // Muestra todas las actividades registradas en este dia.
@@ -60,67 +67,73 @@ public class DiaAgenda {
 
     // Busca bloques disponibles del tamaño solicitado dentro del dia.
     public String buscarHorarioDisponible(int duracionMinutos) {
-
+    
         if (duracionMinutos <= 0 || duracionMinutos > 24 * 60) {
             return "Duracion invalida.";
         }
-
+    
         StringBuilder horarios = new StringBuilder();
-
-        LocalTime hora = LocalTime.of(0, 0);
-
+        int minutoActual = 0;
         boolean encontrado = false;
-
-        while (hora.getHour() * 60
-                + hora.getMinute()
-                + duracionMinutos <= 24 * 60) {
-
-            LocalTime horaFin = hora.plusMinutes(duracionMinutos);
-
+    
+        while (minutoActual + duracionMinutos <= 24 * 60) {
+    
+            int minutoFin = minutoActual + duracionMinutos;
             boolean disponible = true;
-
+    
             for (int i = 0; i < actividades.size(); i++) {
-
+    
                 Actividad actividad = actividades.get(i);
-
-                if (actividad.getHoraInicio().isBefore(horaFin)
-                        && actividad.getHoraFin().isAfter(hora)) {
-
+    
+                int inicioActividad = actividad.getHoraInicio().getHour() * 60
+                        + actividad.getHoraInicio().getMinute();
+    
+                int finActividad = actividad.getHoraFin().getHour() * 60
+                        + actividad.getHoraFin().getMinute();
+    
+                if (inicioActividad < minutoFin
+                        && finActividad > minutoActual) {
+    
                     disponible = false;
-
-                    hora = actividad.getHoraFin();
-
+                    minutoActual = finActividad;
                     break;
                 }
             }
-
+    
             if (disponible) {
-
+    
                 horarios.append("- ")
-                        .append(hora)
+                        .append(formatearMinutos(minutoActual))
                         .append(" a ")
-                        .append(horaFin)
+                        .append(formatearMinutos(minutoFin))
                         .append("\n");
-
+    
                 encontrado = true;
-
-                hora = horaFin;
-            }
-
-            // LocalTime vuelve a 00:00 al superar las 23:59.
-            if (hora.equals(LocalTime.MIDNIGHT) && encontrado) {
-                break;
+                minutoActual = minutoFin;
             }
         }
-
+    
         if (!encontrado) {
             return "No hay horarios disponibles para la duracion solicitada.";
         }
-
+    
         return "Horarios disponibles:\n"
                 + horarios.toString().trim();
     }
 
+    public String formatearMinutos(int minutos) {
+    
+        if (minutos == 24 * 60) {
+            return "24:00";
+        }
+    
+        int hora = minutos / 60;
+        int minuto = minutos % 60;
+    
+        return String.format("%02d:%02d", hora, minuto);
+    }
+
+    
     // Busca una actividad por ID dentro de este dia.
     public Actividad buscarActividadPorId(int id) {
 

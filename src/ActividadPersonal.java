@@ -5,8 +5,7 @@ public class ActividadPersonal extends Actividad {
     private String lugar;
 
     public ActividadPersonal(int id, String titulo, LocalTime horaInicio,
-                             LocalTime horaFin, String descripcion,
-                             String lugar) {
+                             LocalTime horaFin, String descripcion, String lugar) {
 
         super(id, titulo, horaInicio, horaFin, descripcion, "Personal");
         this.lugar = lugar;
@@ -21,9 +20,22 @@ public class ActividadPersonal extends Actividad {
     }
 
     @Override
-    public String mostrarActividad() {
+    public String getNombreDatoEspecifico() {
+        return "lugar";
+    }
 
-        return super.mostrarActividad()
-                + " | Lugar: " + lugar;
+    @Override
+    public String getDatoEspecifico() {
+        return lugar;
+    }
+
+    @Override
+    public void setDatoEspecifico(String dato) {
+        setLugar(dato);
+    }
+
+    @Override
+    public String mostrarActividad() {
+        return super.mostrarActividad() + " | Lugar: " + lugar;
     }
 }

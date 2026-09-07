@@ -10,7 +10,6 @@ public class SistemaAgenda {
     private int siguienteId;
 
     public SistemaAgenda() {
-
         this.dias = new TreeMap<LocalDate, DiaAgenda>();
         this.formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         this.siguienteId = 1;
@@ -40,18 +39,16 @@ public class SistemaAgenda {
         this.siguienteId = siguienteId;
     }
 
-    // Genera un identificador unico y aumenta el contador para la siguiente actividad.
+    // Genera un identificador unico para cada actividad.
     public int generarIdActividad() {
 
         int idGenerado = siguienteId;
-
-        siguienteId = siguienteId + 1;
+        siguienteId++;
 
         return idGenerado;
     }
 
     public void agregarDia(DiaAgenda dia) {
-
         dias.put(dia.getFecha(), dia);
     }
 
@@ -62,16 +59,13 @@ public class SistemaAgenda {
         DiaAgenda dia = dias.get(fecha);
 
         if (dia == null) {
-
             dia = new DiaAgenda(fecha);
-
             agregarDia(dia);
         }
 
         dia.agregarActividad(actividad);
     }
 
-    // Busca una actividad por su identificador unico.
     public Actividad buscarActividad(int id) {
 
         for (DiaAgenda dia : dias.values()) {
@@ -86,7 +80,6 @@ public class SistemaAgenda {
         return null;
     }
 
-    // Busca la primera actividad cuyo titulo coincida.
     public Actividad buscarActividad(String titulo) {
 
         for (DiaAgenda dia : dias.values()) {
@@ -101,32 +94,96 @@ public class SistemaAgenda {
         return null;
     }
 
+    // Muestra un dia con el mismo formato en todas las consultas.
+    private void mostrarDiaAgenda(DiaAgenda dia) {
 
-    // Recorre los dias en orden cronologico y muestra sus actividades.
+        System.out.println("----------------------------");
+        System.out.println("Fecha: " + dia.getFecha().format(formatoFecha));
+
+        dia.mostrarActividades();
+    }
+
+    // Muestra toda la agenda.
     public void mostrarDias() {
 
         if (dias.isEmpty()) {
-
             System.out.println("La agenda no tiene dias registrados.");
-
             return;
         }
 
         for (DiaAgenda dia : dias.values()) {
-
-            System.out.println("----------------------------");
-
-            System.out.println(
-                    "Fecha: "
-                    + dia.getFecha().format(formatoFecha)
-            );
-
-            dia.mostrarActividades();
+            mostrarDiaAgenda(dia);
         }
     }
 
-    public String buscarHorarioDisponible(LocalDate fecha,
-                                           int duracionMinutos) {
+    public void mostrarDia(LocalDate fecha) {
+
+        DiaAgenda dia = dias.get(fecha);
+
+        if (dia == null) {
+            System.out.println("No hay actividades registradas para esa fecha.");
+            return;
+        }
+
+        mostrarDiaAgenda(dia);
+    }
+
+    public void mostrarMes(int mes, int anio) {
+
+        boolean encontrado = false;
+
+        for (DiaAgenda dia : dias.values()) {
+
+            LocalDate fecha = dia.getFecha();
+
+            if (fecha.getMonthValue() == mes && fecha.getYear() == anio) {
+                mostrarDiaAgenda(dia);
+                encontrado = true;
+            }
+        }
+
+        if (!encontrado) {
+            System.out.println("No hay actividades registradas para ese mes.");
+        }
+    }
+
+    public void mostrarAnio(int anio) {
+
+        boolean encontrado = false;
+
+        for (DiaAgenda dia : dias.values()) {
+
+            if (dia.getFecha().getYear() == anio) {
+                mostrarDiaAgenda(dia);
+                encontrado = true;
+            }
+        }
+
+        if (!encontrado) {
+            System.out.println("No hay actividades registradas para ese anio.");
+        }
+    }
+
+    // Muestra actividades correspondientes a fechas anteriores a hoy.
+    public void mostrarHistorial() {
+
+        LocalDate hoy = LocalDate.now();
+        boolean encontrado = false;
+
+        for (DiaAgenda dia : dias.values()) {
+
+            if (dia.getFecha().isBefore(hoy)) {
+                mostrarDiaAgenda(dia);
+                encontrado = true;
+            }
+        }
+
+        if (!encontrado) {
+            System.out.println("No hay actividades en el historial.");
+        }
+    }
+
+    public String buscarHorarioDisponible(LocalDate fecha, int duracionMinutos) {
 
         if (duracionMinutos <= 0 || duracionMinutos > 24 * 60) {
             return "Duracion invalida.";
@@ -142,12 +199,10 @@ public class SistemaAgenda {
     }
 
     public DiaAgenda buscarDia(LocalDate fecha) {
-
         return dias.get(fecha);
     }
 
-    public boolean editarFechaDia(LocalDate fechaActual,
-                                  LocalDate nuevaFecha) {
+    public boolean editarFechaDia(LocalDate fechaActual, LocalDate nuevaFecha) {
 
         DiaAgenda dia = dias.get(fechaActual);
 
@@ -155,16 +210,13 @@ public class SistemaAgenda {
             return false;
         }
 
-        if (!fechaActual.equals(nuevaFecha)
-                && dias.containsKey(nuevaFecha)) {
-
+        if (!fechaActual.equals(nuevaFecha) && dias.containsKey(nuevaFecha)) {
             return false;
         }
 
         dias.remove(fechaActual);
 
         dia.setFecha(nuevaFecha);
-
         dias.put(nuevaFecha, dia);
 
         return true;
@@ -193,57 +245,62 @@ public class SistemaAgenda {
         return false;
     }
 
-    // Carga datos utilizados exclusivamente para probar
-    // las funcionalidades del sistema.
+    // Datos utilizados para probar las funcionalidades del sistema.
     public void cargarDatosIniciales() {
 
-        LocalDate fecha1 = LocalDate.of(2026, 9, 8);
-        LocalDate fecha2 = LocalDate.of(2026, 9, 9);
+        LocalDate ayer = LocalDate.now().minusDays(1);
+        LocalDate manana = LocalDate.now().plusDays(1);
+        LocalDate pasadoManana = LocalDate.now().plusDays(2);
 
-        ActividadAcademica academica
-                = new ActividadAcademica(
-                        generarIdActividad(),
-                        "Clase de Programacion Avanzada",
-                        LocalTime.of(10, 0),
-                        LocalTime.of(11, 30),
-                        "Clase INF2236",
-                        "Programacion Avanzada"
-                );
+        ActividadAcademica academica = new ActividadAcademica(
+                generarIdActividad(),
+                "Clase de Programacion Avanzada",
+                LocalTime.of(10, 0),
+                LocalTime.of(11, 30),
+                "Clase INF2236",
+                "Programacion Avanzada"
+        );
 
-        ActividadProyecto proyecto
-                = new ActividadProyecto(
-                        generarIdActividad(),
-                        "Reunion proyecto SIA",
-                        LocalTime.of(15, 0),
-                        LocalTime.of(16, 0),
-                        "Revision del avance del proyecto",
-                        "SIA-GestionAgenda"
-                );
+        ActividadProyecto proyecto = new ActividadProyecto(
+                generarIdActividad(),
+                "Reunion proyecto SIA",
+                LocalTime.of(15, 0),
+                LocalTime.of(16, 0),
+                "Revision del avance del proyecto",
+                "SIA-GestionAgenda"
+        );
 
-        ActividadPersonal personal
-                = new ActividadPersonal(
-                        generarIdActividad(),
-                        "Control medico",
-                        LocalTime.of(9, 0),
-                        LocalTime.of(10, 0),
-                        "Control general",
-                        "Centro medico"
-                );
+        ActividadPersonal personal = new ActividadPersonal(
+                generarIdActividad(),
+                "Control medico",
+                LocalTime.of(9, 0),
+                LocalTime.of(10, 0),
+                "Control general",
+                "Centro medico"
+        );
 
-        ActividadOtro otro
-                = new ActividadOtro(
-                        generarIdActividad(),
-                        "Tramite personal",
-                        LocalTime.of(12, 0),
-                        LocalTime.of(13, 0),
-                        "Realizar tramite pendiente",
-                        "Valparaiso"
-                );
+        ActividadOtro otro = new ActividadOtro(
+                generarIdActividad(),
+                "Tramite personal",
+                LocalTime.of(12, 0),
+                LocalTime.of(13, 0),
+                "Realizar tramite pendiente",
+                "Valparaiso"
+        );
 
-        agregarActividad(fecha1, academica);
-        agregarActividad(fecha1, proyecto);
+        ActividadPersonal historica = new ActividadPersonal(
+                generarIdActividad(),
+                "Entrenamiento",
+                LocalTime.of(18, 0),
+                LocalTime.of(19, 0),
+                "Actividad utilizada para probar el historial",
+                "Gimnasio"
+        );
 
-        agregarActividad(fecha2, personal);
-        agregarActividad(fecha2, otro);
+        agregarActividad(manana, academica);
+        agregarActividad(manana, proyecto);
+        agregarActividad(pasadoManana, personal);
+        agregarActividad(pasadoManana, otro);
+        agregarActividad(ayer, historica);
     }
 }

@@ -5,8 +5,7 @@ public class ActividadAcademica extends Actividad {
     private String asignatura;
 
     public ActividadAcademica(int id, String titulo, LocalTime horaInicio,
-                              LocalTime horaFin, String descripcion,
-                              String asignatura) {
+                              LocalTime horaFin, String descripcion, String asignatura) {
 
         super(id, titulo, horaInicio, horaFin, descripcion, "Academica");
         this.asignatura = asignatura;
@@ -21,9 +20,22 @@ public class ActividadAcademica extends Actividad {
     }
 
     @Override
-    public String mostrarActividad() {
+    public String getNombreDatoEspecifico() {
+        return "asignatura";
+    }
 
-        return super.mostrarActividad()
-                + " | Asignatura: " + asignatura;
+    @Override
+    public String getDatoEspecifico() {
+        return asignatura;
+    }
+
+    @Override
+    public void setDatoEspecifico(String dato) {
+        setAsignatura(dato);
+    }
+
+    @Override
+    public String mostrarActividad() {
+        return super.mostrarActividad() + " | Asignatura: " + asignatura;
     }
 }

@@ -10,8 +10,13 @@ public class Actividad {
     private String tipoActividad;
 
     public Actividad(int id, String titulo, LocalTime horaInicio,
-                     LocalTime horaFin, String descripcion,
-                     String tipoActividad) {
+                     LocalTime horaFin, String descripcion, String tipoActividad) {
+
+        if (!esHorarioValido(horaInicio, horaFin)) {
+            throw new IllegalArgumentException(
+                    "La hora de fin debe ser posterior a la hora de inicio."
+            );
+        }
 
         this.id = id;
         this.titulo = titulo;
@@ -42,6 +47,13 @@ public class Actividad {
     }
 
     public void setHoraInicio(LocalTime horaInicio) {
+
+        if (!esHorarioValido(horaInicio, this.horaFin)) {
+            throw new IllegalArgumentException(
+                    "La hora de inicio debe ser anterior a la hora de fin."
+            );
+        }
+
         this.horaInicio = horaInicio;
     }
 
@@ -50,6 +62,13 @@ public class Actividad {
     }
 
     public void setHoraFin(LocalTime horaFin) {
+
+        if (!esHorarioValido(this.horaInicio, horaFin)) {
+            throw new IllegalArgumentException(
+                    "La hora de fin debe ser posterior a la hora de inicio."
+            );
+        }
+
         this.horaFin = horaFin;
     }
 
@@ -69,7 +88,40 @@ public class Actividad {
         this.tipoActividad = tipoActividad;
     }
 
-    // Devuelve la informacion principal de la actividad en un formato legible.
+    private boolean esHorarioValido(LocalTime horaInicio, LocalTime horaFin) {
+
+        if (horaInicio == null || horaFin == null) {
+            return false;
+        }
+
+        return horaFin.isAfter(horaInicio);
+    }
+
+    public boolean actualizarHorario(LocalTime nuevaHoraInicio, LocalTime nuevaHoraFin) {
+
+        if (!esHorarioValido(nuevaHoraInicio, nuevaHoraFin)) {
+            return false;
+        }
+
+        this.horaInicio = nuevaHoraInicio;
+        this.horaFin = nuevaHoraFin;
+
+        return true;
+    }
+
+    // Las subclases sobrescriben estos metodos
+    // para trabajar con su atributo propio.
+    public String getNombreDatoEspecifico() {
+        return "dato especifico";
+    }
+
+    public String getDatoEspecifico() {
+        return "";
+    }
+
+    public void setDatoEspecifico(String dato) {
+    }
+
     public String mostrarActividad() {
 
         String texto = horaInicio + " - " + horaFin
@@ -80,18 +132,16 @@ public class Actividad {
         return texto;
     }
 
-    // Posponen la actividad utilizando sobrecarga de metodos.
+    // Sobrecarga de metodos para posponer una actividad.
     public void posponer(int minutos) {
 
-        if (horaInicio != null && horaFin != null) {
-            horaInicio = horaInicio.plusMinutes(minutos);
-            horaFin = horaFin.plusMinutes(minutos);
-        }
+        LocalTime nuevaHoraInicio = horaInicio.plusMinutes(minutos);
+        LocalTime nuevaHoraFin = horaFin.plusMinutes(minutos);
+
+        actualizarHorario(nuevaHoraInicio, nuevaHoraFin);
     }
 
     public void posponer(LocalTime horaInicio, LocalTime horaFin) {
-
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
+        actualizarHorario(horaInicio, horaFin);
     }
 }

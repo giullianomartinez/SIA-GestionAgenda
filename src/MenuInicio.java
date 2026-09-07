@@ -6,10 +6,15 @@ public class MenuInicio {
 
     private BufferedReader lector;
     private SistemaAgenda sistemaNormal;
+    private PersistenciaAgenda persistencia;
 
     public MenuInicio() {
+
         this.lector = new BufferedReader(new InputStreamReader(System.in));
         this.sistemaNormal = new SistemaAgenda();
+        this.persistencia = new PersistenciaAgenda();
+
+        persistencia.cargarDatos(sistemaNormal);
     }
 
     public BufferedReader getLector() {
@@ -20,16 +25,7 @@ public class MenuInicio {
         this.lector = lector;
     }
 
-    public SistemaAgenda getSistemaNormal() {
-        return sistemaNormal;
-    }
-
-    public void setSistemaNormal(SistemaAgenda sistemaNormal) {
-        this.sistemaNormal = sistemaNormal;
-    }
-
     // Permite elegir entre modo normal, modo prueba o finalizar el programa.
-    // El modo normal conserva sus datos mientras el programa este ejecutandose.
     public void iniciar() {
 
         boolean continuar = true;
@@ -44,11 +40,16 @@ public class MenuInicio {
             System.out.print("Seleccione una opcion: ");
 
             try {
+
                 String opcion = lector.readLine();
 
                 if (opcion.equals("1")) {
 
-                    MenuAgenda menu = new MenuAgenda(sistemaNormal, lector);
+                    MenuAgenda menu = new MenuAgenda(
+                            sistemaNormal,
+                            lector
+                    );
+
                     menu.iniciar();
 
                 } else if (opcion.equals("2")) {
@@ -57,10 +58,16 @@ public class MenuInicio {
                     SistemaAgenda sistemaPrueba = new SistemaAgenda();
                     sistemaPrueba.cargarDatosIniciales();
 
-                    MenuAgenda menu = new MenuAgenda(sistemaPrueba, lector);
+                    MenuAgenda menu = new MenuAgenda(
+                            sistemaPrueba,
+                            lector
+                    );
+
                     menu.iniciar();
 
                 } else if (opcion.equals("3")) {
+
+                    persistencia.guardarDatos(sistemaNormal);
 
                     continuar = false;
                     System.out.println("Programa finalizado.");
