@@ -13,55 +13,61 @@ public class MenuAgenda {
     private DateTimeFormatter formatoHora;
 
     public MenuAgenda(SistemaAgenda sistema, BufferedReader lector) {
+
         this.sistema = sistema;
         this.lector = lector;
-        // Formatos utilizados para interpretar las fechas y horas ingresadas por el usuario.
-        this.formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        this.formatoHora = DateTimeFormatter.ofPattern("HH:mm");
+
+        this.formatoFecha
+                = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        this.formatoHora
+                = DateTimeFormatter.ofPattern("HH:mm");
     }
 
     public SistemaAgenda getSistema() {
         return sistema;
     }
-    
+
     public void setSistema(SistemaAgenda sistema) {
         this.sistema = sistema;
     }
-    
+
     public BufferedReader getLector() {
         return lector;
     }
-    
+
     public void setLector(BufferedReader lector) {
         this.lector = lector;
     }
-    
+
     public DateTimeFormatter getFormatoFecha() {
         return formatoFecha;
     }
-    
+
     public void setFormatoFecha(DateTimeFormatter formatoFecha) {
         this.formatoFecha = formatoFecha;
     }
-    
+
     public DateTimeFormatter getFormatoHora() {
         return formatoHora;
     }
-    
+
     public void setFormatoHora(DateTimeFormatter formatoHora) {
         this.formatoHora = formatoHora;
     }
 
-    // Controla el menú principal de la agenda hasta que el usuario decide volver al menu de inicio.
+    // Controla el menu de la agenda hasta que el usuario
+    // decide volver al menu de inicio.
     public void iniciar() {
 
-        boolean continuar = true; 
+        boolean continuar = true;
 
         while (continuar) {
 
             mostrarOpciones();
 
             try {
+
                 String opcion = lector.readLine();
 
                 if (opcion.equals("1")) {
@@ -69,27 +75,55 @@ public class MenuAgenda {
                     agregarActividad();
 
                 } else if (opcion.equals("2")) {
-                    
+
                     buscarActividad();
-                    
+
                 } else if (opcion.equals("3")) {
 
                     sistema.mostrarDias();
 
                 } else if (opcion.equals("4")) {
-                    
+
                     mostrarActividadesPorTipo();
-                    
+
                 } else if (opcion.equals("5")) {
+
+                    buscarDia();
+
+                } else if (opcion.equals("6")) {
+
+                    editarDia();
+
+                } else if (opcion.equals("7")) {
+
+                    eliminarDia();
+
+                } else if (opcion.equals("8")) {
+
+                    editarActividad();
+
+                } else if (opcion.equals("9")) {
+
+                    eliminarActividad();
+
+                } else if (opcion.equals("10")) {
+
+                    buscarHorarioDisponible();
+
+                } else if (opcion.equals("11")) {
 
                     continuar = false;
 
                 } else {
+
                     System.out.println("\nOpcion no valida.");
                 }
 
             } catch (IOException error) {
-                System.out.println("\nNo se pudo leer la opcion ingresada.");
+
+                System.out.println(
+                        "\nNo se pudo leer la opcion ingresada."
+                );
             }
         }
     }
@@ -98,61 +132,28 @@ public class MenuAgenda {
 
         System.out.println();
         System.out.println("===== AGENDA =====");
+
         System.out.println("1. Agregar actividad");
         System.out.println("2. Buscar actividad");
         System.out.println("3. Mostrar agenda");
         System.out.println("4. Mostrar actividades por tipo");
-        System.out.println("5. Volver al menu de inicio");
+        System.out.println("5. Buscar dia");
+        System.out.println("6. Editar dia");
+        System.out.println("7. Eliminar dia");
+        System.out.println("8. Editar actividad");
+        System.out.println("9. Eliminar actividad");
+        System.out.println("10. Buscar horario disponible");
+        System.out.println("11. Volver al menu de inicio");
+
         System.out.print("Seleccione una opcion: ");
     }
 
-    // Muestra las actividades de una fecha filtradas por tipo.
-    public void mostrarActividadesPorTipo() throws IOException {
-    
-        LocalDate fecha = leerFecha("Ingrese fecha (dd/MM/yyyy): ");
-    
-        DiaAgenda dia = sistema.getDias().get(fecha);
-    
-        if (dia == null) {
-            System.out.println("\nNo existe un dia registrado con esa fecha.");
-            return;
-        }
-    
-        System.out.println();
-        System.out.println("Tipo de actividad:");
-        System.out.println("1. Academica");
-        System.out.println("2. Proyecto");
-        System.out.println("3. Personal");
-        System.out.println("4. Otro");
-        System.out.print("Seleccione un tipo: ");
-    
-        String opcion = lector.readLine();
-        String tipoActividad;
-    
-        if (opcion.equals("1")) {
-            tipoActividad = "Academica";
-    
-        } else if (opcion.equals("2")) {
-            tipoActividad = "Proyecto";
-    
-        } else if (opcion.equals("3")) {
-            tipoActividad = "Personal";
-    
-        } else if (opcion.equals("4")) {
-            tipoActividad = "Otro";
-    
-        } else {
-            System.out.println("\nTipo no valido.");
-            return;
-        }
-    
-        dia.mostrarActividades(tipoActividad);
-    }
-    
-    // Solicita los datos necesarios al usuario y registra una nueva actividad.
+    // Solicita los datos necesarios al usuario
+    // y registra una nueva actividad.
     public void agregarActividad() throws IOException {
 
         System.out.println();
+
         System.out.println("Tipo de actividad");
         System.out.println("1. Academica");
         System.out.println("2. Proyecto");
@@ -163,163 +164,546 @@ public class MenuAgenda {
 
         String tipo = lector.readLine();
 
-        LocalDate fecha = leerFecha("Ingrese fecha (dd/MM/yyyy): ");
-        String titulo = leerTexto("Ingrese titulo: ");
-        LocalTime horaInicio = leerHora("Ingrese hora de inicio (HH:mm): ");
-        LocalTime horaFin = leerHora("Ingrese hora de fin (HH:mm): ");
-        String descripcion = leerTexto("Ingrese descripcion: ");
+        LocalDate fecha
+                = leerFecha(
+                        "Ingrese fecha (dd/MM/yyyy): "
+                );
+
+        String titulo
+                = leerTexto(
+                        "Ingrese titulo: "
+                );
+
+        LocalTime horaInicio
+                = leerHora(
+                        "Ingrese hora de inicio (HH:mm): "
+                );
+
+        LocalTime horaFin
+                = leerHora(
+                        "Ingrese hora de fin (HH:mm): "
+                );
+
+        String descripcion
+                = leerTexto(
+                        "Ingrese descripcion: "
+                );
 
         int id = sistema.generarIdActividad();
 
-        Actividad actividad = crearActividadPorTipo(
-                id, tipo, titulo, horaInicio, horaFin, descripcion
-        );
+        Actividad actividad
+                = crearActividadPorTipo(
+                        id,
+                        tipo,
+                        titulo,
+                        horaInicio,
+                        horaFin,
+                        descripcion
+                );
 
         sistema.agregarActividad(fecha, actividad);
 
-        System.out.println("\nActividad agregada correctamente.");
+        System.out.println(
+                "\nActividad agregada correctamente."
+        );
     }
 
-    // Permite buscar una actividad utilizando su ID o su título.
+    // Permite buscar una actividad utilizando su ID o su titulo.
     public void buscarActividad() throws IOException {
-    
+
         System.out.println();
+
         System.out.println("Buscar actividad por:");
         System.out.println("1. ID");
         System.out.println("2. Titulo");
+
         System.out.print("Seleccione una opcion: ");
-    
+
         String opcion = lector.readLine();
-    
+
         Actividad actividad = null;
-    
+
         if (opcion.equals("1")) {
-    
-            System.out.print("Ingrese ID de la actividad: ");
-    
-            try {
-                int id = Integer.parseInt(lector.readLine());
-                actividad = sistema.buscarActividad(id);
-    
-            } catch (NumberFormatException error) {
-                System.out.println("\nEl ID debe ser un numero.");
-                return;
-            }
-    
+
+            int id = leerEntero(
+                    "Ingrese ID de la actividad: "
+            );
+
+            actividad = sistema.buscarActividad(id);
+
         } else if (opcion.equals("2")) {
-    
-            String titulo = leerTexto("Ingrese titulo: ");
+
+            String titulo = leerTexto(
+                    "Ingrese titulo: "
+            );
+
             actividad = sistema.buscarActividad(titulo);
-    
+
         } else {
-    
+
             System.out.println("\nOpcion no valida.");
+
             return;
         }
-    
+
         if (actividad == null) {
-            System.out.println("\nActividad no encontrada.");
+
+            System.out.println(
+                    "\nActividad no encontrada."
+            );
+
         } else {
-            System.out.println("\nActividad encontrada:");
-            System.out.println(actividad.mostrarActividad());
+
+            System.out.println(
+                    "\nActividad encontrada:"
+            );
+
+            System.out.println(
+                    actividad.mostrarActividad()
+            );
         }
     }
 
-    // Crea la subclase de Actividad correspondiente al tipo seleccionado por el usuario.
-    public Actividad crearActividadPorTipo(int id, String tipo,
-                                           String titulo,
-                                           LocalTime horaInicio,
-                                           LocalTime horaFin,
-                                           String descripcion)
-                                           throws IOException {
+    // Muestra las actividades de una fecha filtradas por tipo.
+    public void mostrarActividadesPorTipo()
+            throws IOException {
+
+        LocalDate fecha
+                = leerFecha(
+                        "Ingrese fecha (dd/MM/yyyy): "
+                );
+
+        DiaAgenda dia = sistema.buscarDia(fecha);
+
+        if (dia == null) {
+
+            System.out.println(
+                    "\nNo existe un dia registrado con esa fecha."
+            );
+
+            return;
+        }
+
+        System.out.println();
+
+        System.out.println("Tipo de actividad:");
+        System.out.println("1. Academica");
+        System.out.println("2. Proyecto");
+        System.out.println("3. Personal");
+        System.out.println("4. Otro");
+
+        System.out.print("Seleccione un tipo: ");
+
+        String opcion = lector.readLine();
+
+        String tipoActividad;
+
+        if (opcion.equals("1")) {
+
+            tipoActividad = "Academica";
+
+        } else if (opcion.equals("2")) {
+
+            tipoActividad = "Proyecto";
+
+        } else if (opcion.equals("3")) {
+
+            tipoActividad = "Personal";
+
+        } else if (opcion.equals("4")) {
+
+            tipoActividad = "Otro";
+
+        } else {
+
+            System.out.println(
+                    "\nTipo no valido."
+            );
+
+            return;
+        }
+
+        dia.mostrarActividades(tipoActividad);
+    }
+
+    public void buscarDia() throws IOException {
+
+        System.out.println();
+        System.out.println("----- BUSCAR DIA -----");
+
+        LocalDate fecha
+                = leerFecha(
+                        "Ingrese fecha (dd/MM/yyyy): "
+                );
+
+        DiaAgenda dia = sistema.buscarDia(fecha);
+
+        if (dia != null) {
+
+            System.out.println(
+                    "Fecha: "
+                    + fecha.format(formatoFecha)
+                    + ":"
+            );
+
+            dia.mostrarActividades();
+
+        } else {
+
+            System.out.println(
+                    "No se encontro el dia solicitado."
+            );
+        }
+    }
+
+    public void editarDia() throws IOException {
+
+        System.out.println();
+        System.out.println("----- EDITAR DIA -----");
+
+        LocalDate fechaActual
+                = leerFecha(
+                        "Ingrese fecha del dia a editar (dd/MM/yyyy): "
+                );
+
+        LocalDate nuevaFecha
+                = leerFecha(
+                        "Ingrese nueva fecha (dd/MM/yyyy): "
+                );
+
+        boolean editado
+                = sistema.editarFechaDia(
+                        fechaActual,
+                        nuevaFecha
+                );
+
+        if (editado) {
+
+            System.out.println(
+                    "Fecha del dia editada correctamente."
+            );
+
+        } else {
+
+            System.out.println(
+                    "No se pudo editar la fecha del dia."
+            );
+        }
+    }
+
+    public void eliminarDia() throws IOException {
+
+        System.out.println();
+        System.out.println("----- ELIMINAR DIA -----");
+
+        LocalDate fecha
+                = leerFecha(
+                        "Ingrese fecha del dia a eliminar (dd/MM/yyyy): "
+                );
+
+        boolean eliminado
+                = sistema.eliminarDia(fecha);
+
+        if (eliminado) {
+
+            System.out.println(
+                    "Dia eliminado correctamente."
+            );
+
+        } else {
+
+            System.out.println(
+                    "No se encontro el dia solicitado."
+            );
+        }
+    }
+
+    public void editarActividad() throws IOException {
+
+        System.out.println();
+
+        System.out.println(
+                "----- EDITAR ACTIVIDAD -----"
+        );
+
+        int id
+                = leerEntero(
+                        "Ingrese ID de la actividad a editar: "
+                );
+
+        Actividad actividad
+                = sistema.buscarActividad(id);
+
+        if (actividad == null) {
+
+            System.out.println(
+                    "No se encontro la actividad con el ID especificado: "
+                    + id
+            );
+
+            return;
+        }
+
+        System.out.println(
+                "Actividad encontrada: "
+                + actividad.mostrarActividad()
+        );
+
+        String nuevoTitulo
+                = leerTexto(
+                        "Ingrese nuevo titulo: "
+                );
+
+        LocalTime nuevaHoraInicio
+                = leerHora(
+                        "Ingrese nueva hora de inicio (HH:mm): "
+                );
+
+        LocalTime nuevaHoraFin
+                = leerHora(
+                        "Ingrese nueva hora de fin (HH:mm): "
+                );
+
+        String nuevaDescripcion
+                = leerTexto(
+                        "Ingrese nueva descripcion: "
+                );
+
+        actividad.setTitulo(nuevoTitulo);
+        actividad.setHoraInicio(nuevaHoraInicio);
+        actividad.setHoraFin(nuevaHoraFin);
+        actividad.setDescripcion(nuevaDescripcion);
+
+        System.out.println(
+                "Actividad editada correctamente."
+        );
+    }
+
+    public void eliminarActividad()
+            throws IOException {
+
+        System.out.println();
+
+        System.out.println(
+                "----- ELIMINAR ACTIVIDAD -----"
+        );
+
+        int id
+                = leerEntero(
+                        "Ingrese ID de la actividad a eliminar: "
+                );
+
+        boolean eliminada
+                = sistema.eliminarActividadPorId(id);
+
+        if (eliminada) {
+
+            System.out.println(
+                    "Actividad eliminada correctamente."
+            );
+
+        } else {
+
+            System.out.println(
+                    "No se encontro ninguna actividad "
+                    + "con el ID especificado: "
+                    + id
+            );
+        }
+    }
+
+    public void buscarHorarioDisponible()
+            throws IOException {
+
+        System.out.println();
+
+        System.out.println(
+                "----- BUSCAR HORARIO DISPONIBLE -----"
+        );
+
+        LocalDate fecha
+                = leerFecha(
+                        "Ingrese fecha (dd/MM/yyyy): "
+                );
+
+        int duracionMinutos = 0;
+
+        while (duracionMinutos <= 0
+                || duracionMinutos > 1440) {
+
+            duracionMinutos
+                    = leerEntero(
+                            "Ingrese duracion (en minutos): "
+                    );
+
+            if (duracionMinutos <= 0
+                    || duracionMinutos > 1440) {
+
+                System.out.println(
+                        "La duracion debe ser mayor a 0 "
+                        + "y no superar 1440 minutos."
+                );
+            }
+        }
+
+        String resultado
+                = sistema.buscarHorarioDisponible(
+                        fecha,
+                        duracionMinutos
+                );
+
+        System.out.println(resultado);
+    }
+
+    // Crea la subclase de Actividad correspondiente
+    // al tipo seleccionado.
+    public Actividad crearActividadPorTipo(
+            int id,
+            String tipo,
+            String titulo,
+            LocalTime horaInicio,
+            LocalTime horaFin,
+            String descripcion)
+            throws IOException {
 
         if (tipo.equals("1")) {
 
-            String asignatura = leerTexto("Ingrese asignatura: ");
+            String asignatura
+                    = leerTexto(
+                            "Ingrese asignatura: "
+                    );
 
             return new ActividadAcademica(
-                    id, titulo, horaInicio, horaFin,
-                    descripcion, asignatura
+                    id,
+                    titulo,
+                    horaInicio,
+                    horaFin,
+                    descripcion,
+                    asignatura
             );
         }
 
         if (tipo.equals("2")) {
 
-            String nombreProyecto =
-                    leerTexto("Ingrese nombre del proyecto: ");
+            String nombreProyecto
+                    = leerTexto(
+                            "Ingrese nombre del proyecto: "
+                    );
 
             return new ActividadProyecto(
-                    id, titulo, horaInicio, horaFin,
-                    descripcion, nombreProyecto
+                    id,
+                    titulo,
+                    horaInicio,
+                    horaFin,
+                    descripcion,
+                    nombreProyecto
             );
         }
 
         if (tipo.equals("3")) {
 
-            String lugar = leerTexto("Ingrese lugar: ");
+            String lugar
+                    = leerTexto(
+                            "Ingrese lugar: "
+                    );
 
             return new ActividadPersonal(
-                    id, titulo, horaInicio, horaFin,
-                    descripcion, lugar
+                    id,
+                    titulo,
+                    horaInicio,
+                    horaFin,
+                    descripcion,
+                    lugar
             );
         }
 
         if (tipo.equals("4")) {
 
-            String lugar = leerTexto("Ingrese lugar: ");
+            String lugar
+                    = leerTexto(
+                            "Ingrese lugar: "
+                    );
 
             return new ActividadOtro(
-                    id, titulo, horaInicio, horaFin,
-                    descripcion, lugar
+                    id,
+                    titulo,
+                    horaInicio,
+                    horaFin,
+                    descripcion,
+                    lugar
             );
         }
 
-        System.out.println("Tipo no valido. Se agregara como otro.");
+        System.out.println(
+                "Tipo no valido. Se agregara como otro."
+        );
 
-        String lugar = leerTexto("Ingrese lugar: ");
+        String lugar
+                = leerTexto(
+                        "Ingrese lugar: "
+                );
 
         return new ActividadOtro(
-                id, titulo, horaInicio, horaFin,
-                descripcion, lugar
+                id,
+                titulo,
+                horaInicio,
+                horaFin,
+                descripcion,
+                lugar
         );
     }
 
-    // Lee texto desde consola y evita aceptar entradas vacías.
-    public String leerTexto(String mensaje) throws IOException {
+    // Lee texto desde consola y evita aceptar entradas vacias.
+    public String leerTexto(String mensaje)
+            throws IOException {
 
         System.out.print(mensaje);
+
         String texto = lector.readLine();
 
         while (texto.trim().length() == 0) {
 
-            System.out.println("\nEl texto no puede estar vacio.");
+            System.out.println(
+                    "\nEl texto no puede estar vacio."
+            );
+
             System.out.print(mensaje);
+
             texto = lector.readLine();
         }
 
         return texto;
     }
 
-    // Solicita una fecha hasta que el usuario ingrese un valor con formato válido.
-    public LocalDate leerFecha(String mensaje) throws IOException {
+    // Solicita una fecha hasta que el usuario
+    // ingrese un valor valido.
+    public LocalDate leerFecha(String mensaje)
+            throws IOException {
 
-        boolean fechaValida = false; 
+        boolean fechaValida = false;
+
         LocalDate fecha = null;
 
         while (!fechaValida) {
 
             System.out.print(mensaje);
+
             String texto = lector.readLine();
 
             try {
 
-                fecha = LocalDate.parse(texto, formatoFecha);
+                fecha = LocalDate.parse(
+                        texto,
+                        formatoFecha
+                );
+
                 fechaValida = true;
 
             } catch (DateTimeParseException error) {
 
                 System.out.println(
-                        "\nFecha invalida. Ejemplo valido: 23/08/2026"
+                        "\nFecha invalida. "
+                        + "Ejemplo valido: 23/08/2026"
                 );
             }
         }
@@ -327,30 +711,62 @@ public class MenuAgenda {
         return fecha;
     }
 
-    // Solicita una hora hasta que el usuario ingrese un valor con formato válido.
-    public LocalTime leerHora(String mensaje) throws IOException {
+    // Solicita una hora hasta que el usuario
+    // ingrese un valor valido.
+    public LocalTime leerHora(String mensaje)
+            throws IOException {
 
         boolean horaValida = false;
+
         LocalTime hora = null;
 
         while (!horaValida) {
 
             System.out.print(mensaje);
+
             String texto = lector.readLine();
 
             try {
 
-                hora = LocalTime.parse(texto, formatoHora);
+                hora = LocalTime.parse(
+                        texto,
+                        formatoHora
+                );
+
                 horaValida = true;
 
             } catch (DateTimeParseException error) {
 
                 System.out.println(
-                        "\nHora invalida. Ejemplo valido: 14:30"
+                        "\nHora invalida. "
+                        + "Ejemplo valido: 14:30"
                 );
             }
         }
 
         return hora;
+    }
+
+    // Solicita un entero hasta que el usuario
+    // ingrese un valor numerico valido.
+    public int leerEntero(String mensaje)
+            throws IOException {
+
+        while (true) {
+
+            String texto = leerTexto(mensaje);
+
+            try {
+
+                return Integer.parseInt(texto);
+
+            } catch (NumberFormatException error) {
+
+                System.out.println(
+                        "Entrada invalida. "
+                        + "Ingrese un numero entero."
+                );
+            }
+        }
     }
 }

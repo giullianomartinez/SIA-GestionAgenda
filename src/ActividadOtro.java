@@ -5,8 +5,8 @@ public class ActividadOtro extends Actividad {
     private String lugar;
 
     public ActividadOtro(int id, String titulo, LocalTime horaInicio,
-                             LocalTime horaFin, String descripcion,
-                             String lugar) {
+                         LocalTime horaFin, String descripcion,
+                         String lugar) {
 
         super(id, titulo, horaInicio, horaFin, descripcion, "Otro");
         this.lugar = lugar;
@@ -20,5 +20,10 @@ public class ActividadOtro extends Actividad {
         this.lugar = lugar;
     }
 
-}
+    @Override
+    public String mostrarActividad() {
 
+        return super.mostrarActividad()
+                + " | Lugar: " + lugar;
+    }
+}

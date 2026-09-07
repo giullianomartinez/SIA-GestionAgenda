@@ -19,4 +19,9 @@ public class ActividadProyecto extends Actividad {
     public void setNombreProyecto(String nombreProyecto) {
         this.nombreProyecto = nombreProyecto;
     }
+
+    @Override
+    public String mostrarActividad() {
+        return super.mostrarActividad() + " | Proyecto: " + nombreProyecto;
+    }
 }

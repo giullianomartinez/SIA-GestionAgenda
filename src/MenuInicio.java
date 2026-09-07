@@ -5,21 +5,31 @@ import java.io.InputStreamReader;
 public class MenuInicio {
 
     private BufferedReader lector;
+    private SistemaAgenda sistemaNormal;
 
     public MenuInicio() {
         this.lector = new BufferedReader(new InputStreamReader(System.in));
+        this.sistemaNormal = new SistemaAgenda();
     }
 
     public BufferedReader getLector() {
         return lector;
     }
-    
+
     public void setLector(BufferedReader lector) {
         this.lector = lector;
     }
 
+    public SistemaAgenda getSistemaNormal() {
+        return sistemaNormal;
+    }
+
+    public void setSistemaNormal(SistemaAgenda sistemaNormal) {
+        this.sistemaNormal = sistemaNormal;
+    }
+
     // Permite elegir entre modo normal, modo prueba o finalizar el programa.
-    // Cada modo crea su propia instancia de SistemaAgenda.
+    // El modo normal conserva sus datos mientras el programa este ejecutandose.
     public void iniciar() {
 
         boolean continuar = true;
@@ -38,21 +48,16 @@ public class MenuInicio {
 
                 if (opcion.equals("1")) {
 
-                    // El modo normal inicia con una agenda vacía.
-                    SistemaAgenda sistema = new SistemaAgenda();
-                    MenuAgenda menu = new MenuAgenda(sistema, lector);
-
+                    MenuAgenda menu = new MenuAgenda(sistemaNormal, lector);
                     menu.iniciar();
 
                 } else if (opcion.equals("2")) {
 
-                    // El modo prueba utiliza una agenda independiente con datos precargados,
-                    // evitando mezclarlos con los datos del modo normal.
-                    SistemaAgenda sistema = new SistemaAgenda();
-                    sistema.cargarDatosIniciales();
+                    // El modo prueba usa una agenda independiente con datos precargados.
+                    SistemaAgenda sistemaPrueba = new SistemaAgenda();
+                    sistemaPrueba.cargarDatosIniciales();
 
-                    MenuAgenda menu = new MenuAgenda(sistema, lector);
-
+                    MenuAgenda menu = new MenuAgenda(sistemaPrueba, lector);
                     menu.iniciar();
 
                 } else if (opcion.equals("3")) {
