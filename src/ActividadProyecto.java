@@ -25,6 +25,11 @@ public class ActividadProyecto extends Actividad {
     }
 
     @Override
+    public String getDatoEspecifico() {
+        return nombreProyecto;
+    }
+
+    @Override
     public void setDatoEspecifico(String dato) {
         setNombreProyecto(dato);
     }
