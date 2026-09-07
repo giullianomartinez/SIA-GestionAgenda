@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.time.LocalTime;
 
 public class DiaAgenda {
 
@@ -41,4 +42,69 @@ public class DiaAgenda {
             System.out.println(actividad.mostrarActividad());
         }
     }
+
+public String buscarHorarioDisponible(int duracionMinutos) {
+        if (duracionMinutos <= 0 || duracionMinutos > 24 * 60) {
+            return "Duracion invalida.";
+        }
+
+        StringBuilder horarios = new StringBuilder();
+        LocalTime hora = LocalTime.of(0, 0); // O puedes cambiarlo a of(8, 0) si prefieres horario hábil
+        boolean encontrado = false;
+
+        while (hora.getHour() * 60 + hora.getMinute() + duracionMinutos <= 24 * 60) {
+            LocalTime horaFin = hora.plusMinutes(duracionMinutos);
+            boolean disponible = true;
+
+            for (int i = 0; i < actividades.size(); i++) {
+                Actividad actividad = actividades.get(i);
+                if (actividad.getHoraInicio().isBefore(horaFin) && actividad.getHoraFin().isAfter(hora)) {
+                    disponible = false;
+                    // Salta directamente al fin de la actividad en conflicto para acelerar
+                    hora = actividad.getHoraFin();
+                    break;
+                }
+            }
+
+            if (disponible) {
+                horarios.append("- ").append(hora).append(" a ").append(horaFin).append("\n");
+                encontrado = true;
+                // Avanza al siguiente bloque de igual duración (o de a 30/60 min)
+                hora = horaFin;
+            }
+
+            if (hora.equals(LocalTime.MIDNIGHT) && encontrado) {
+                break;
+            }
+        }
+
+        if (!encontrado) {
+            return "No hay horarios disponibles para la duracion solicitada.";
+        }
+
+        return "Horarios disponibles:\n" + horarios.toString().trim();
+    }
+
+    public Actividad buscarActividadPorId(int id) {
+        for (int i = 0; i < actividades.size(); i++) {
+            Actividad act = actividades.get(i);
+            if (act.getId() == id) {
+                return act;
+            }
+        }
+        return null;
+    }
+
+    public boolean eliminarActividadPorId(int id) {
+        for (int i = 0; i < actividades.size(); i++) {
+            Actividad act = actividades.get(i);
+            if (act.getId() == id) {
+                actividades.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    
 }

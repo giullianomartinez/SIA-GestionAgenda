@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.TreeMap;
+import java.time.LocalTime;
 
 public class SistemaAgenda {
 
@@ -55,4 +56,66 @@ public class SistemaAgenda {
             dia.mostrarActividades();
         }
     }
+
+    public String buscarHorarioDisponible(LocalDate fecha, int duracionMinutos) {
+        if (duracionMinutos <= 0 || duracionMinutos > 24 * 60) {
+            return "Duracion invalida.";
+        }
+
+        DiaAgenda dia = dias.get(fecha);
+        if (dia == null) {
+            return "El dia completo esta disponible (00:00 a 23:59).";
+        }
+
+        return dia.buscarHorarioDisponible(duracionMinutos);
+    }
+
+    public DiaAgenda buscarDia(LocalDate fecha) {
+        return dias.get(fecha);
+    }
+
+    public boolean editarFechaDia(LocalDate fechaActual, LocalDate nuevaFecha) {
+        DiaAgenda dia = dias.get(fechaActual);
+        if (dia == null) {
+            return false;
+        }
+        if(!fechaActual.equals(nuevaFecha) && dias.containsKey(nuevaFecha)) {
+            return false;
+        }
+
+        dias.remove(fechaActual);
+        dia.setFecha(nuevaFecha);
+        dias.put(nuevaFecha, dia);
+        return true;
+    }
+
+    public boolean eliminarDia(LocalDate fecha) {
+        DiaAgenda dia = dias.get(fecha);
+        if (dia == null) {
+            return false;
+        }
+
+        dias.remove(fecha);
+        return true;
+    }
+
+    public Actividad buscarActividadPorId(int id) {
+        for (DiaAgenda dia : dias.values()) {
+            Actividad act = dia.buscarActividadPorId(id);
+            if (act != null) {
+                return act;
+            }
+        }
+        return null;
+    }
+
+    public boolean eliminarActividadPorId(int id) {
+        for (DiaAgenda dia : dias.values()) {
+            if (dia.eliminarActividadPorId(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
 }

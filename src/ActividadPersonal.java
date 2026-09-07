@@ -20,4 +20,9 @@ public class ActividadPersonal extends Actividad {
         this.lugar = lugar;
     }
 
+    @Override
+    public String mostrarActividad() {
+        return super.mostrarActividad() + " | Lugar: " + lugar;
+    }
+
 }

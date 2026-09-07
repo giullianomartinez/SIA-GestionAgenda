@@ -79,16 +79,19 @@ public class Actividad {
         return texto;
     }
 
-    public void posponer(int minutos){
-        if(horaInicio != null && horaFin != null){
+    public void posponer(int minutos) {
+        if (horaInicio != null && horaFin != null) {
             horaInicio = horaInicio.plusMinutes(minutos);
             horaFin = horaFin.plusMinutes(minutos);
         }
     }
-    public void posponer(LocalTime horaInicio, LocalTime horaFin){
+
+    public void posponer(LocalTime horaInicio, LocalTime horaFin) {
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
     }
+
+    
 
     
 }
