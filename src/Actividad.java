@@ -69,8 +69,9 @@ public class Actividad {
         this.tipoActividad = tipoActividad;
     }
 
-    
+    // Devuelve la informacion principal de la actividad en un formato legible.
     public String mostrarActividad() {
+
         String texto = horaInicio + " - " + horaFin
                 + " | " + titulo
                 + " | " + getTipoActividad()
@@ -79,7 +80,9 @@ public class Actividad {
         return texto;
     }
 
+    // Posponen la actividad utilizando sobrecarga de metodos.
     public void posponer(int minutos) {
+
         if (horaInicio != null && horaFin != null) {
             horaInicio = horaInicio.plusMinutes(minutos);
             horaFin = horaFin.plusMinutes(minutos);
@@ -87,11 +90,8 @@ public class Actividad {
     }
 
     public void posponer(LocalTime horaInicio, LocalTime horaFin) {
+
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
     }
-
-    
-
-    
 }
