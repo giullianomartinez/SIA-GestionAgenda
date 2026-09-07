@@ -10,115 +10,67 @@ public class SistemaAgenda {
     private int siguienteId;
 
     public SistemaAgenda() {
-
-        this.dias
-                = new TreeMap<
-                        LocalDate,
-                        DiaAgenda
-                        >();
-
-        this.formatoFecha
-                = DateTimeFormatter.ofPattern(
-                        "dd/MM/yyyy"
-                );
-
+        this.dias = new TreeMap<LocalDate, DiaAgenda>();
+        this.formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         this.siguienteId = 1;
     }
 
-    public TreeMap<
-            LocalDate,
-            DiaAgenda> getDias() {
-
+    public TreeMap<LocalDate, DiaAgenda> getDias() {
         return dias;
     }
 
-    public void setDias(
-            TreeMap<
-                    LocalDate,
-                    DiaAgenda> dias) {
-
+    public void setDias(TreeMap<LocalDate, DiaAgenda> dias) {
         this.dias = dias;
     }
 
-    public DateTimeFormatter
-            getFormatoFecha() {
-
+    public DateTimeFormatter getFormatoFecha() {
         return formatoFecha;
     }
 
-    public void setFormatoFecha(
-            DateTimeFormatter formatoFecha) {
-
-        this.formatoFecha
-                = formatoFecha;
+    public void setFormatoFecha(DateTimeFormatter formatoFecha) {
+        this.formatoFecha = formatoFecha;
     }
 
     public int getSiguienteId() {
         return siguienteId;
     }
 
-    public void setSiguienteId(
-            int siguienteId) {
-
-        this.siguienteId
-                = siguienteId;
+    public void setSiguienteId(int siguienteId) {
+        this.siguienteId = siguienteId;
     }
 
-    // Genera un identificador unico.
+    // Genera un identificador unico para cada actividad.
     public int generarIdActividad() {
 
-        int idGenerado
-                = siguienteId;
-
-        siguienteId
-                = siguienteId + 1;
+        int idGenerado = siguienteId;
+        siguienteId++;
 
         return idGenerado;
     }
 
-    public void agregarDia(
-            DiaAgenda dia) {
-
-        dias.put(
-                dia.getFecha(),
-                dia
-        );
+    public void agregarDia(DiaAgenda dia) {
+        dias.put(dia.getFecha(), dia);
     }
 
     // Agrega una actividad a una fecha.
-    // Si el dia no existe se crea.
-    public void agregarActividad(
-            LocalDate fecha,
-            Actividad actividad) {
+    // Si el dia no existe, se crea automaticamente.
+    public void agregarActividad(LocalDate fecha, Actividad actividad) {
 
-        DiaAgenda dia
-                = dias.get(fecha);
+        DiaAgenda dia = dias.get(fecha);
 
         if (dia == null) {
-
-            dia
-                    = new DiaAgenda(
-                            fecha
-                    );
-
+            dia = new DiaAgenda(fecha);
             agregarDia(dia);
         }
 
-        dia.agregarActividad(
-                actividad
-        );
+        dia.agregarActividad(actividad);
     }
 
-    public Actividad buscarActividad(
-            int id) {
+    public Actividad buscarActividad(int id) {
 
-        for (DiaAgenda dia
-                : dias.values()) {
+        for (DiaAgenda dia : dias.values()) {
 
-            Actividad actividad
-                    = dia.buscarActividadPorId(
-                            id
-                    );
+            Actividad actividad = dia.buscarActividadPorId(id);
 
             if (actividad != null) {
                 return actividad;
@@ -128,16 +80,11 @@ public class SistemaAgenda {
         return null;
     }
 
-    public Actividad buscarActividad(
-            String titulo) {
+    public Actividad buscarActividad(String titulo) {
 
-        for (DiaAgenda dia
-                : dias.values()) {
+        for (DiaAgenda dia : dias.values()) {
 
-            Actividad actividad
-                    = dia.buscarActividadPorTitulo(
-                            titulo
-                    );
+            Actividad actividad = dia.buscarActividadPorTitulo(titulo);
 
             if (actividad != null) {
                 return actividad;
@@ -147,233 +94,137 @@ public class SistemaAgenda {
         return null;
     }
 
-    // Evita repetir el codigo encargado
-    // de mostrar un dia.
-    private void mostrarDiaAgenda(
-            DiaAgenda dia) {
+    // Muestra un dia con el mismo formato en todas las consultas.
+    private void mostrarDiaAgenda(DiaAgenda dia) {
 
-        System.out.println(
-                "----------------------------"
-        );
-
-        System.out.println(
-                "Fecha: "
-                + dia.getFecha().format(
-                        formatoFecha
-                )
-        );
+        System.out.println("----------------------------");
+        System.out.println("Fecha: " + dia.getFecha().format(formatoFecha));
 
         dia.mostrarActividades();
     }
 
-    // Muestra la agenda completa.
+    // Muestra toda la agenda.
     public void mostrarDias() {
 
         if (dias.isEmpty()) {
-
-            System.out.println(
-                    "La agenda no tiene "
-                    + "dias registrados."
-            );
-
+            System.out.println("La agenda no tiene dias registrados.");
             return;
         }
 
-        for (DiaAgenda dia
-                : dias.values()) {
-
+        for (DiaAgenda dia : dias.values()) {
             mostrarDiaAgenda(dia);
         }
     }
 
-    // Muestra la agenda de un dia.
-    public void mostrarDia(
-            LocalDate fecha) {
+    public void mostrarDia(LocalDate fecha) {
 
-        DiaAgenda dia
-                = dias.get(fecha);
+        DiaAgenda dia = dias.get(fecha);
 
         if (dia == null) {
-
-            System.out.println(
-                    "No hay actividades "
-                    + "registradas para esa fecha."
-            );
-
+            System.out.println("No hay actividades registradas para esa fecha.");
             return;
         }
 
         mostrarDiaAgenda(dia);
     }
 
-    // Muestra todos los dias registrados
-    // dentro del mes y anio indicados.
-    public void mostrarMes(
-            int mes,
-            int anio) {
+    public void mostrarMes(int mes, int anio) {
 
         boolean encontrado = false;
 
-        for (DiaAgenda dia
-                : dias.values()) {
+        for (DiaAgenda dia : dias.values()) {
 
-            LocalDate fecha
-                    = dia.getFecha();
+            LocalDate fecha = dia.getFecha();
 
-            if (fecha.getMonthValue()
-                    == mes
-                    && fecha.getYear()
-                    == anio) {
-
+            if (fecha.getMonthValue() == mes && fecha.getYear() == anio) {
                 mostrarDiaAgenda(dia);
-
                 encontrado = true;
             }
         }
 
         if (!encontrado) {
-
-            System.out.println(
-                    "No hay actividades "
-                    + "registradas para ese mes."
-            );
+            System.out.println("No hay actividades registradas para ese mes.");
         }
     }
 
-    // Muestra todos los dias registrados
-    // dentro de un anio.
-    public void mostrarAnio(
-            int anio) {
+    public void mostrarAnio(int anio) {
 
         boolean encontrado = false;
 
-        for (DiaAgenda dia
-                : dias.values()) {
+        for (DiaAgenda dia : dias.values()) {
 
-            if (dia.getFecha().getYear()
-                    == anio) {
-
+            if (dia.getFecha().getYear() == anio) {
                 mostrarDiaAgenda(dia);
-
                 encontrado = true;
             }
         }
 
         if (!encontrado) {
-
-            System.out.println(
-                    "No hay actividades "
-                    + "registradas para ese anio."
-            );
+            System.out.println("No hay actividades registradas para ese anio.");
         }
     }
 
-    // Muestra las actividades pertenecientes
-    // a fechas anteriores al dia actual.
+    // Muestra actividades correspondientes a fechas anteriores a hoy.
     public void mostrarHistorial() {
 
-        LocalDate hoy
-                = LocalDate.now();
-
+        LocalDate hoy = LocalDate.now();
         boolean encontrado = false;
 
-        for (DiaAgenda dia
-                : dias.values()) {
+        for (DiaAgenda dia : dias.values()) {
 
-            if (dia.getFecha().isBefore(
-                    hoy
-            )) {
-
+            if (dia.getFecha().isBefore(hoy)) {
                 mostrarDiaAgenda(dia);
-
                 encontrado = true;
             }
         }
 
         if (!encontrado) {
-
-            System.out.println(
-                    "No hay actividades "
-                    + "en el historial."
-            );
+            System.out.println("No hay actividades en el historial.");
         }
     }
 
-    public String buscarHorarioDisponible(
-            LocalDate fecha,
-            int duracionMinutos) {
+    public String buscarHorarioDisponible(LocalDate fecha, int duracionMinutos) {
 
-        if (duracionMinutos <= 0
-                || duracionMinutos
-                > 24 * 60) {
-
+        if (duracionMinutos <= 0 || duracionMinutos > 24 * 60) {
             return "Duracion invalida.";
         }
 
-        DiaAgenda dia
-                = dias.get(fecha);
+        DiaAgenda dia = dias.get(fecha);
 
         if (dia == null) {
-
-            return "El dia completo esta "
-                    + "disponible "
-                    + "(00:00 a 23:59).";
+            return "El dia completo esta disponible (00:00 a 23:59).";
         }
 
-        return dia.buscarHorarioDisponible(
-                duracionMinutos
-        );
+        return dia.buscarHorarioDisponible(duracionMinutos);
     }
 
-    public DiaAgenda buscarDia(
-            LocalDate fecha) {
-
+    public DiaAgenda buscarDia(LocalDate fecha) {
         return dias.get(fecha);
     }
 
-    public boolean editarFechaDia(
-            LocalDate fechaActual,
-            LocalDate nuevaFecha) {
+    public boolean editarFechaDia(LocalDate fechaActual, LocalDate nuevaFecha) {
 
-        DiaAgenda dia
-                = dias.get(
-                        fechaActual
-                );
+        DiaAgenda dia = dias.get(fechaActual);
 
         if (dia == null) {
             return false;
         }
 
-        if (!fechaActual.equals(
-                nuevaFecha)
-                && dias.containsKey(
-                        nuevaFecha)) {
-
+        if (!fechaActual.equals(nuevaFecha) && dias.containsKey(nuevaFecha)) {
             return false;
         }
 
-        dias.remove(
-                fechaActual
-        );
+        dias.remove(fechaActual);
 
-        dia.setFecha(
-                nuevaFecha
-        );
-
-        dias.put(
-                nuevaFecha,
-                dia
-        );
+        dia.setFecha(nuevaFecha);
+        dias.put(nuevaFecha, dia);
 
         return true;
     }
 
-    public boolean eliminarDia(
-            LocalDate fecha) {
+    public boolean eliminarDia(LocalDate fecha) {
 
-        if (!dias.containsKey(
-                fecha)) {
-
+        if (!dias.containsKey(fecha)) {
             return false;
         }
 
@@ -382,16 +233,11 @@ public class SistemaAgenda {
         return true;
     }
 
-    public boolean eliminarActividadPorId(
-            int id) {
+    public boolean eliminarActividadPorId(int id) {
 
-        for (DiaAgenda dia
-                : dias.values()) {
+        for (DiaAgenda dia : dias.values()) {
 
-            if (dia.eliminarActividadPorId(
-                    id
-            )) {
-
+            if (dia.eliminarActividadPorId(id)) {
                 return true;
             }
         }
@@ -399,97 +245,62 @@ public class SistemaAgenda {
         return false;
     }
 
-    // Carga datos utilizados exclusivamente
-    // para probar las funcionalidades.
+    // Datos utilizados para probar las funcionalidades del sistema.
     public void cargarDatosIniciales() {
 
-        LocalDate fechaHistorial
-                = LocalDate.now()
-                        .minusDays(1);
+        LocalDate ayer = LocalDate.now().minusDays(1);
+        LocalDate manana = LocalDate.now().plusDays(1);
+        LocalDate pasadoManana = LocalDate.now().plusDays(2);
 
-        LocalDate fecha1
-                = LocalDate.now()
-                        .plusDays(1);
-
-        LocalDate fecha2
-                = LocalDate.now()
-                        .plusDays(2);
-
-        ActividadAcademica academica
-                = new ActividadAcademica(
-                        generarIdActividad(),
-                        "Clase de Programacion Avanzada",
-                        LocalTime.of(10, 0),
-                        LocalTime.of(11, 30),
-                        "Clase INF2236",
-                        "Programacion Avanzada"
-                );
-
-        ActividadProyecto proyecto
-                = new ActividadProyecto(
-                        generarIdActividad(),
-                        "Reunion proyecto SIA",
-                        LocalTime.of(15, 0),
-                        LocalTime.of(16, 0),
-                        "Revision del avance "
-                        + "del proyecto",
-                        "SIA-GestionAgenda"
-                );
-
-        ActividadPersonal personal
-                = new ActividadPersonal(
-                        generarIdActividad(),
-                        "Control medico",
-                        LocalTime.of(9, 0),
-                        LocalTime.of(10, 0),
-                        "Control general",
-                        "Centro medico"
-                );
-
-        ActividadOtro otro
-                = new ActividadOtro(
-                        generarIdActividad(),
-                        "Tramite personal",
-                        LocalTime.of(12, 0),
-                        LocalTime.of(13, 0),
-                        "Realizar tramite pendiente",
-                        "Valparaiso"
-                );
-
-        ActividadPersonal historica
-                = new ActividadPersonal(
-                        generarIdActividad(),
-                        "Entrenamiento",
-                        LocalTime.of(18, 0),
-                        LocalTime.of(19, 0),
-                        "Actividad de prueba "
-                        + "para el historial",
-                        "Gimnasio"
-                );
-
-        agregarActividad(
-                fecha1,
-                academica
+        ActividadAcademica academica = new ActividadAcademica(
+                generarIdActividad(),
+                "Clase de Programacion Avanzada",
+                LocalTime.of(10, 0),
+                LocalTime.of(11, 30),
+                "Clase INF2236",
+                "Programacion Avanzada"
         );
 
-        agregarActividad(
-                fecha1,
-                proyecto
+        ActividadProyecto proyecto = new ActividadProyecto(
+                generarIdActividad(),
+                "Reunion proyecto SIA",
+                LocalTime.of(15, 0),
+                LocalTime.of(16, 0),
+                "Revision del avance del proyecto",
+                "SIA-GestionAgenda"
         );
 
-        agregarActividad(
-                fecha2,
-                personal
+        ActividadPersonal personal = new ActividadPersonal(
+                generarIdActividad(),
+                "Control medico",
+                LocalTime.of(9, 0),
+                LocalTime.of(10, 0),
+                "Control general",
+                "Centro medico"
         );
 
-        agregarActividad(
-                fecha2,
-                otro
+        ActividadOtro otro = new ActividadOtro(
+                generarIdActividad(),
+                "Tramite personal",
+                LocalTime.of(12, 0),
+                LocalTime.of(13, 0),
+                "Realizar tramite pendiente",
+                "Valparaiso"
         );
 
-        agregarActividad(
-                fechaHistorial,
-                historica
+        ActividadPersonal historica = new ActividadPersonal(
+                generarIdActividad(),
+                "Entrenamiento",
+                LocalTime.of(18, 0),
+                LocalTime.of(19, 0),
+                "Actividad utilizada para probar el historial",
+                "Gimnasio"
         );
+
+        agregarActividad(manana, academica);
+        agregarActividad(manana, proyecto);
+        agregarActividad(pasadoManana, personal);
+        agregarActividad(pasadoManana, otro);
+        agregarActividad(ayer, historica);
     }
 }
