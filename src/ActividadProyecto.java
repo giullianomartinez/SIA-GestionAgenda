@@ -5,7 +5,7 @@ public class ActividadProyecto extends Actividad {
     private String nombreProyecto;
 
     public ActividadProyecto(int id, String titulo, LocalTime horaInicio,
-                             LocalTime horaFin, String descripcion, String nombreProyecto) {
+                             LocalTime horaFin, String descripcion, String nombreProyecto) throws HorarioInvalidoException{
 
         super(id, titulo, horaInicio, horaFin, descripcion, "Proyecto");
         this.nombreProyecto = nombreProyecto;

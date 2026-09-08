@@ -233,25 +233,35 @@ public class MenuAgenda {
 
         int id = sistema.generarIdActividad();
 
-        Actividad actividad = crearActividadPorTipo(
-                id,
-                tipo,
-                titulo,
-                horaInicio,
-                horaFin,
-                descripcion
-        );
+        try {
 
-        if (actividad == null) {
+            Actividad actividad = crearActividadPorTipo(
+                    id,
+                    tipo,
+                    titulo,
+                    horaInicio,
+                    horaFin,
+                    descripcion
+            );
 
-            System.out.println("\nNo se pudo crear la actividad.");
+            if (actividad == null) {
+                System.out.println("\nNo se pudo crear la actividad.");
+                return;
+            }
 
-            return;
+            sistema.agregarActividad(fecha, actividad);
+
+            System.out.println(
+                    "\nActividad agregada correctamente."
+            );
+
+        } catch (HorarioInvalidoException error) {
+
+            System.out.println(
+                    "\nNo se pudo agregar la actividad: "
+                            + error.getMessage()
+            );
         }
-
-        sistema.agregarActividad(fecha, actividad);
-
-        System.out.println("\nActividad agregada correctamente.");
     }
 
     public void buscarActividad() throws IOException {
@@ -522,12 +532,28 @@ public class MenuAgenda {
                 "Ingrese nueva " + actividad.getNombreDatoEspecifico() + ": "
         );
 
-        actividad.setTitulo(nuevoTitulo);
-        actividad.actualizarHorario(nuevaHoraInicio, nuevaHoraFin);
-        actividad.setDescripcion(nuevaDescripcion);
-        actividad.setDatoEspecifico(nuevoDatoEspecifico);
+        try {
 
-        System.out.println("Actividad editada correctamente.");
+            actividad.actualizarHorario(
+                    nuevaHoraInicio,
+                    nuevaHoraFin
+            );
+
+            actividad.setTitulo(nuevoTitulo);
+            actividad.setDescripcion(nuevaDescripcion);
+            actividad.setDatoEspecifico(nuevoDatoEspecifico);
+
+            System.out.println(
+                    "Actividad editada correctamente."
+            );
+
+        } catch (HorarioInvalidoException error) {
+
+            System.out.println(
+                    "\nNo se pudo editar la actividad: "
+                            + error.getMessage()
+            );
+        }
     }
 
     public void eliminarActividad() throws IOException {
@@ -606,7 +632,7 @@ public class MenuAgenda {
             String titulo,
             LocalTime horaInicio,
             LocalTime horaFin,
-            String descripcion) throws IOException {
+            String descripcion) throws IOException,HorarioInvalidoException {
 
         if (tipo.equals("1")) {
 

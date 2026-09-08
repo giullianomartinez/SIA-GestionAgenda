@@ -264,61 +264,72 @@ public class SistemaAgenda {
     }
 
     // Datos utilizados para probar las funcionalidades del sistema.
+    // Datos utilizados para probar las funcionalidades del sistema.
     public void cargarDatosIniciales() {
 
-        LocalDate ayer = LocalDate.now().minusDays(1);
-        LocalDate manana = LocalDate.now().plusDays(1);
-        LocalDate pasadoManana = LocalDate.now().plusDays(2);
+        try {
 
-        ActividadAcademica academica = new ActividadAcademica(
-                generarIdActividad(),
-                "Clase de Programacion Avanzada",
-                LocalTime.of(10, 0),
-                LocalTime.of(11, 30),
-                "Clase INF2236",
-                "Programacion Avanzada"
-        );
+            LocalDate ayer = LocalDate.now().minusDays(1);
+            LocalDate manana = LocalDate.now().plusDays(1);
+            LocalDate pasadoManana = LocalDate.now().plusDays(2);
 
-        ActividadProyecto proyecto = new ActividadProyecto(
-                generarIdActividad(),
-                "Reunion proyecto SIA",
-                LocalTime.of(15, 0),
-                LocalTime.of(16, 0),
-                "Revision del avance del proyecto",
-                "SIA-GestionAgenda"
-        );
+            ActividadAcademica academica = new ActividadAcademica(
+                    generarIdActividad(),
+                    "Clase de Programacion Avanzada",
+                    LocalTime.of(10, 0),
+                    LocalTime.of(11, 30),
+                    "Clase INF2236",
+                    "Programacion Avanzada"
+            );
 
-        ActividadPersonal personal = new ActividadPersonal(
-                generarIdActividad(),
-                "Control medico",
-                LocalTime.of(9, 0),
-                LocalTime.of(10, 0),
-                "Control general",
-                "Centro medico"
-        );
+            ActividadProyecto proyecto = new ActividadProyecto(
+                    generarIdActividad(),
+                    "Reunion proyecto SIA",
+                    LocalTime.of(15, 0),
+                    LocalTime.of(16, 0),
+                    "Revision del avance del proyecto",
+                    "SIA-GestionAgenda"
+            );
 
-        ActividadOtro otro = new ActividadOtro(
-                generarIdActividad(),
-                "Tramite personal",
-                LocalTime.of(12, 0),
-                LocalTime.of(13, 0),
-                "Realizar tramite pendiente",
-                "Valparaiso"
-        );
+            ActividadPersonal personal = new ActividadPersonal(
+                    generarIdActividad(),
+                    "Control medico",
+                    LocalTime.of(9, 0),
+                    LocalTime.of(10, 0),
+                    "Control general",
+                    "Centro medico"
+            );
 
-        ActividadPersonal historica = new ActividadPersonal(
-                generarIdActividad(),
-                "Entrenamiento",
-                LocalTime.of(18, 0),
-                LocalTime.of(19, 0),
-                "Actividad utilizada para probar el historial",
-                "Gimnasio"
-        );
+            ActividadOtro otro = new ActividadOtro(
+                    generarIdActividad(),
+                    "Tramite personal",
+                    LocalTime.of(12, 0),
+                    LocalTime.of(13, 0),
+                    "Realizar tramite pendiente",
+                    "Valparaiso"
+            );
 
-        agregarActividad(manana, academica);
-        agregarActividad(manana, proyecto);
-        agregarActividad(pasadoManana, personal);
-        agregarActividad(pasadoManana, otro);
-        agregarActividad(ayer, historica);
+            ActividadPersonal historica = new ActividadPersonal(
+                    generarIdActividad(),
+                    "Entrenamiento",
+                    LocalTime.of(18, 0),
+                    LocalTime.of(19, 0),
+                    "Actividad utilizada para probar el historial",
+                    "Gimnasio"
+            );
+
+            agregarActividad(manana, academica);
+            agregarActividad(manana, proyecto);
+            agregarActividad(pasadoManana, personal);
+            agregarActividad(pasadoManana, otro);
+            agregarActividad(ayer, historica);
+
+        } catch (HorarioInvalidoException error) {
+
+            System.out.println(
+                    "Error al cargar datos iniciales: "
+                            + error.getMessage()
+            );
+        }
     }
 }
