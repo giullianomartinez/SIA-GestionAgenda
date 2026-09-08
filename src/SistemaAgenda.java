@@ -49,8 +49,26 @@ public class SistemaAgenda {
     }
 
     public void agregarDia(DiaAgenda dia) {
-        dias.put(dia.getFecha(), dia);
+        dias.putIfAbsent(dia.getFecha(), dia);
     }
+
+    // Lista solamente los dias registrados,
+    // independiente de sus actividades.
+    public void listarDias() {
+
+        if (dias.isEmpty()) {
+            System.out.println("No hay dias registrados.");
+            return;
+        }
+
+        System.out.println("\n----- DIAS REGISTRADOS -----");
+
+        for (LocalDate fecha : dias.keySet()) {
+            System.out.println(fecha.format(formatoFecha));
+        }
+    }
+
+
 
     // Agrega una actividad a una fecha.
     // Si el dia no existe, se crea automaticamente.

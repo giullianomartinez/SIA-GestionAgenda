@@ -106,34 +106,46 @@ public class MenuAgenda {
             System.out.println();
             System.out.println("===== ACTIVIDADES =====");
             System.out.println("1. Agregar actividad");
-            System.out.println("2. Buscar actividad");
-            System.out.println("3. Mostrar actividades por tipo");
-            System.out.println("4. Editar actividad");
-            System.out.println("5. Eliminar actividad");
-            System.out.println("6. Volver");
+            System.out.println("2. Listar actividades de un dia");
+            System.out.println("3. Buscar actividad");
+            System.out.println("4. Mostrar actividades por tipo");
+            System.out.println("5. Editar actividad");
+            System.out.println("6. Eliminar actividad");
+            System.out.println("7. Volver");
 
             System.out.print("Seleccione una opcion: ");
             String opcion = lector.readLine();
 
             if (opcion.equals("1")) {
+
                 agregarActividad();
 
             } else if (opcion.equals("2")) {
-                buscarActividad();
+
+                listarActividadesDeUnDia();
 
             } else if (opcion.equals("3")) {
-                mostrarActividadesPorTipo();
+
+                buscarActividad();
 
             } else if (opcion.equals("4")) {
-                editarActividad();
+
+                mostrarActividadesPorTipo();
 
             } else if (opcion.equals("5")) {
-                eliminarActividad();
+
+                editarActividad();
 
             } else if (opcion.equals("6")) {
+
+                eliminarActividad();
+
+            } else if (opcion.equals("7")) {
+
                 continuar = false;
 
             } else {
+
                 System.out.println("\nOpcion no valida.");
             }
         }
@@ -147,27 +159,42 @@ public class MenuAgenda {
 
             System.out.println();
             System.out.println("===== DIAS =====");
-            System.out.println("1. Buscar dia");
-            System.out.println("2. Editar dia");
-            System.out.println("3. Eliminar dia");
-            System.out.println("4. Volver");
+            System.out.println("1. Agregar dia");
+            System.out.println("2. Listar dias");
+            System.out.println("3. Buscar dia");
+            System.out.println("4. Editar dia");
+            System.out.println("5. Eliminar dia");
+            System.out.println("6. Volver");
 
             System.out.print("Seleccione una opcion: ");
             String opcion = lector.readLine();
 
             if (opcion.equals("1")) {
-                buscarDia();
+
+                agregarDia();
 
             } else if (opcion.equals("2")) {
-                editarDia();
+
+                sistema.listarDias();
 
             } else if (opcion.equals("3")) {
-                eliminarDia();
+
+                buscarDia();
 
             } else if (opcion.equals("4")) {
+
+                editarDia();
+
+            } else if (opcion.equals("5")) {
+
+                eliminarDia();
+
+            } else if (opcion.equals("6")) {
+
                 continuar = false;
 
             } else {
+
                 System.out.println("\nOpcion no valida.");
             }
         }
@@ -176,13 +203,30 @@ public class MenuAgenda {
     public void agregarActividad() throws IOException {
 
         System.out.println();
+        System.out.println("----- AGREGAR ACTIVIDAD -----");
 
+        // Primero se solicita el dia
+        LocalDate fecha = leerFecha("Ingrese fecha (dd/MM/yyyy): ");
+
+        // Se verifica que el dia exista
+        DiaAgenda dia = sistema.buscarDia(fecha);
+
+        if (dia == null) {
+
+            System.out.println("\nNo existe un dia registrado con esa fecha.");
+
+            System.out.println("Primero debe agregar el dia.");
+
+            return;
+        }
+
+        // Si el dia existe, continuamos con la actividad
         String tipo = leerTipoActividad();
 
-        LocalDate fecha = leerFecha("Ingrese fecha (dd/MM/yyyy): ");
         String titulo = leerTexto("Ingrese titulo: ");
 
         LocalTime horaInicio = leerHora("Ingrese hora de inicio (HH:mm): ");
+
         LocalTime horaFin = leerHoraFin(horaInicio);
 
         String descripcion = leerTexto("Ingrese descripcion: ");
@@ -190,11 +234,18 @@ public class MenuAgenda {
         int id = sistema.generarIdActividad();
 
         Actividad actividad = crearActividadPorTipo(
-                id, tipo, titulo, horaInicio, horaFin, descripcion
+                id,
+                tipo,
+                titulo,
+                horaInicio,
+                horaFin,
+                descripcion
         );
 
         if (actividad == null) {
+
             System.out.println("\nNo se pudo crear la actividad.");
+
             return;
         }
 
@@ -319,6 +370,64 @@ public class MenuAgenda {
 
         dia.mostrarActividades(tipoActividad);
     }
+
+    public void agregarDia() throws IOException {
+
+        System.out.println();
+        System.out.println("----- AGREGAR DIA -----");
+
+        LocalDate fecha = leerFecha(
+                "Ingrese fecha (dd/MM/yyyy): "
+        );
+
+        // Verificamos si el dia ya existe
+        if (sistema.buscarDia(fecha) != null) {
+
+            System.out.println(
+                    "\nYa existe un dia registrado con esa fecha."
+            );
+
+            return;
+        }
+
+        // Creamos el objeto DiaAgenda
+        DiaAgenda nuevoDia = new DiaAgenda(fecha);
+        sistema.agregarDia(nuevoDia);
+
+        System.out.println(
+                "\nDia agregado correctamente."
+        );
+    }
+
+    public void listarActividadesDeUnDia() throws IOException {
+
+        System.out.println();
+        System.out.println("----- ACTIVIDADES DE UN DIA -----");
+
+        LocalDate fecha = leerFecha(
+                "Ingrese fecha (dd/MM/yyyy): "
+        );
+
+        DiaAgenda dia = sistema.buscarDia(fecha);
+
+        if (dia == null) {
+
+            System.out.println(
+                    "\nNo existe un dia registrado con esa fecha."
+            );
+
+            return;
+        }
+
+        System.out.println(
+                "\nActividades del "
+                        + fecha.format(formatoFecha)
+                        + ":"
+        );
+
+        dia.mostrarActividades();
+    }
+
 
     public void buscarDia() throws IOException {
 
