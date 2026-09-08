@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class VentanaAgenda extends JFrame {
     private SistemaAgenda sistema;
@@ -78,7 +79,7 @@ public class VentanaAgenda extends JFrame {
         add(scroll, BorderLayout.CENTER);
 
 
-        // Acciones de los botones
+        // Acciones de los botones ActionListener
         botonMostrarAgenda.addActionListener(evento -> mostrarAgenda());
 
         botonCerrar.addActionListener(evento -> dispose());
@@ -90,6 +91,15 @@ public class VentanaAgenda extends JFrame {
                 }
         );
 
+        botonActividades.addActionListener(evento -> {
+
+                    VentanaActividades ventana = new VentanaActividades(sistema);
+
+                    ventana.mostrarVentana();
+                }
+        );
+
+        botonHorario.addActionListener(evento -> buscarHorarioDisponible());
     }
 
     private void mostrarAgenda() {
@@ -138,6 +148,75 @@ public class VentanaAgenda extends JFrame {
 
     public void mostrarVentana() {
         setVisible(true);
+    }
+
+    private void buscarHorarioDisponible() {
+        LocalDate fecha = solicitarFecha("Ingrese fecha (dd/MM/yyyy):");
+
+        if (fecha == null) {
+            return;
+        }
+
+        Integer duracion = solicitarEntero("Ingrese duracion requerida en minutos:");
+
+        if (duracion == null) {
+            return;
+        }
+
+        if (duracion <= 0 || duracion > 1440) {
+
+            JOptionPane.showMessageDialog(this, "La duracion debe ser mayor a 0 " + "y no superar 1440 minutos.");
+
+            return;
+        }
+
+        String resultado = sistema.buscarHorarioDisponible(fecha, duracion);
+
+        areaResultados.setText("BUSQUEDA DE HORARIO DISPONIBLE\n" + "-----------------------------\n" + "Fecha: " + fecha.format(formatoFecha) + "\n" + "Duracion: " + duracion + " minutos\n\n" + resultado);
+
+        areaResultados.setCaretPosition(0);
+    }
+
+    private LocalDate solicitarFecha(String mensaje) {
+
+        while (true) {
+
+            String texto = JOptionPane.showInputDialog(this, mensaje);
+
+            if (texto == null) {
+                return null;
+            }
+
+            try {
+
+                return LocalDate.parse(texto, formatoFecha);
+
+            } catch (DateTimeParseException error) {
+
+                JOptionPane.showMessageDialog(this, "Fecha invalida.\n" + "Ejemplo valido: 23/08/2026");
+            }
+        }
+    }
+
+    private Integer solicitarEntero(String mensaje) {
+
+        while (true) {
+
+            String texto = JOptionPane.showInputDialog(this, mensaje);
+
+            if (texto == null) {
+                return null;
+            }
+
+            try {
+
+                return Integer.parseInt(texto);
+
+            } catch (NumberFormatException error) {
+
+                JOptionPane.showMessageDialog(this, "Debe ingresar un numero entero.");
+            }
+        }
     }
 }
 
