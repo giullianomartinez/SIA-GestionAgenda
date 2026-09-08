@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import javax.swing.SwingUtilities;
+
 
 public class MenuInicio {
 
@@ -25,6 +27,44 @@ public class MenuInicio {
         this.lector = lector;
     }
 
+
+    public void seleccionarInterfaz(SistemaAgenda sistema) throws IOException {
+
+        System.out.println();
+        System.out.println("===== SELECCIONAR INTERFAZ =====");
+        System.out.println("1. Consola");
+        System.out.println("2. Ventana");
+        System.out.println("3. Volver");
+        System.out.print("Seleccione una opcion: ");
+
+        String opcion = lector.readLine();
+
+        if (opcion.equals("1")) {
+
+            MenuAgenda menu = new MenuAgenda(sistema, lector);
+
+            menu.iniciar();
+
+        } else if (opcion.equals("2")) {
+
+            SwingUtilities.invokeLater(() -> {
+
+                VentanaAgenda ventana = new VentanaAgenda(sistema);
+
+                ventana.mostrarVentana();
+            });
+
+        } else if (opcion.equals("3")) {
+
+            return;
+
+        } else {
+
+            System.out.println("\nOpcion no valida.");
+        }
+    }
+
+
     // Permite elegir entre modo normal, modo prueba o finalizar el programa.
     public void iniciar() {
 
@@ -45,25 +85,15 @@ public class MenuInicio {
 
                 if (opcion.equals("1")) {
 
-                    MenuAgenda menu = new MenuAgenda(
-                            sistemaNormal,
-                            lector
-                    );
-
-                    menu.iniciar();
+                    seleccionarInterfaz(sistemaNormal);
 
                 } else if (opcion.equals("2")) {
 
-                    // El modo prueba usa una agenda independiente con datos precargados.
                     SistemaAgenda sistemaPrueba = new SistemaAgenda();
+
                     sistemaPrueba.cargarDatosIniciales();
 
-                    MenuAgenda menu = new MenuAgenda(
-                            sistemaPrueba,
-                            lector
-                    );
-
-                    menu.iniciar();
+                    seleccionarInterfaz(sistemaPrueba);
 
                 } else if (opcion.equals("3")) {
 
