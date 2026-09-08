@@ -10,10 +10,10 @@ public class Actividad {
     private String tipoActividad;
 
     public Actividad(int id, String titulo, LocalTime horaInicio,
-                     LocalTime horaFin, String descripcion, String tipoActividad) {
+                     LocalTime horaFin, String descripcion, String tipoActividad) throws HorarioInvalidoException {
 
         if (!esHorarioValido(horaInicio, horaFin)) {
-            throw new IllegalArgumentException(
+            throw new HorarioInvalidoException(
                     "La hora de fin debe ser posterior a la hora de inicio."
             );
         }
@@ -46,10 +46,10 @@ public class Actividad {
         return horaInicio;
     }
 
-    public void setHoraInicio(LocalTime horaInicio) {
+    public void setHoraInicio(LocalTime horaInicio) throws HorarioInvalidoException {
 
         if (!esHorarioValido(horaInicio, this.horaFin)) {
-            throw new IllegalArgumentException(
+            throw new HorarioInvalidoException(
                     "La hora de inicio debe ser anterior a la hora de fin."
             );
         }
@@ -61,10 +61,10 @@ public class Actividad {
         return horaFin;
     }
 
-    public void setHoraFin(LocalTime horaFin) {
+    public void setHoraFin(LocalTime horaFin) throws HorarioInvalidoException {
 
         if (!esHorarioValido(this.horaInicio, horaFin)) {
-            throw new IllegalArgumentException(
+            throw new HorarioInvalidoException(
                     "La hora de fin debe ser posterior a la hora de inicio."
             );
         }
@@ -97,16 +97,15 @@ public class Actividad {
         return horaFin.isAfter(horaInicio);
     }
 
-    public boolean actualizarHorario(LocalTime nuevaHoraInicio, LocalTime nuevaHoraFin) {
+    public void actualizarHorario(LocalTime nuevaHoraInicio, LocalTime nuevaHoraFin) throws HorarioInvalidoException {
 
         if (!esHorarioValido(nuevaHoraInicio, nuevaHoraFin)) {
-            return false;
+            throw new HorarioInvalidoException("La hora de fin debe ser posterior a la hora de inicio.");
         }
 
         this.horaInicio = nuevaHoraInicio;
         this.horaFin = nuevaHoraFin;
 
-        return true;
     }
 
     // Las subclases sobrescriben estos metodos
@@ -133,7 +132,7 @@ public class Actividad {
     }
 
     // Sobrecarga de metodos para posponer una actividad.
-    public void posponer(int minutos) {
+    public void posponer(int minutos) throws  HorarioInvalidoException {
 
         LocalTime nuevaHoraInicio = horaInicio.plusMinutes(minutos);
         LocalTime nuevaHoraFin = horaFin.plusMinutes(minutos);
@@ -141,7 +140,7 @@ public class Actividad {
         actualizarHorario(nuevaHoraInicio, nuevaHoraFin);
     }
 
-    public void posponer(LocalTime horaInicio, LocalTime horaFin) {
+    public void posponer(LocalTime horaInicio, LocalTime horaFin) throws HorarioInvalidoException {
         actualizarHorario(horaInicio, horaFin);
     }
 }

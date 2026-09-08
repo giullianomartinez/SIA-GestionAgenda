@@ -250,7 +250,12 @@ public class PersistenciaAgenda {
                             mayorId = id;
                         }
                     }
+                } catch (HorarioInvalidoException error) {
 
+                    System.out.println(
+                            "Actividad con horario invalido en actividades.csv: "
+                                    + error.getMessage()
+                    );
                 } catch (RuntimeException error) {
 
                     System.out.println(
@@ -271,7 +276,7 @@ public class PersistenciaAgenda {
                                      LocalTime horaInicio,
                                      LocalTime horaFin,
                                      String descripcion,
-                                     String datoEspecifico) {
+                                     String datoEspecifico) throws HorarioInvalidoException{
 
         if (tipoActividad.equalsIgnoreCase("Academica")) {
 

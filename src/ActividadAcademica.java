@@ -5,7 +5,7 @@ public class ActividadAcademica extends Actividad {
     private String asignatura;
 
     public ActividadAcademica(int id, String titulo, LocalTime horaInicio,
-                              LocalTime horaFin, String descripcion, String asignatura) {
+                              LocalTime horaFin, String descripcion, String asignatura) throws HorarioInvalidoException {
 
         super(id, titulo, horaInicio, horaFin, descripcion, "Academica");
         this.asignatura = asignatura;
