@@ -276,19 +276,28 @@ public class MenuAgenda {
 
         Actividad actividad = null;
 
-        if (opcion.equals("1")) {
+        try {
 
-            int id = leerEntero("Ingrese ID de la actividad: ");
-            actividad = sistema.buscarActividad(id);
+            if (opcion.equals("1")) {
 
-        } else if (opcion.equals("2")) {
+                int id = leerEntero("Ingrese ID de la actividad: ");
+                actividad = sistema.buscarActividad(id);
 
-            String titulo = leerTexto("Ingrese titulo: ");
-            actividad = sistema.buscarActividad(titulo);
+            } else if (opcion.equals("2")) {
 
-        } else {
+                String titulo = leerTexto("Ingrese titulo: ");
+                actividad = sistema.buscarActividad(titulo);
 
-            System.out.println("\nOpcion no valida.");
+            } else {
+
+                System.out.println("\nOpcion no valida.");
+                return;
+            }
+
+        } catch (ActividadNoEncontradaException error) {
+
+            System.out.println("\n" + error.getMessage());
+
             return;
         }
 
@@ -504,12 +513,17 @@ public class MenuAgenda {
         System.out.println("----- EDITAR ACTIVIDAD -----");
 
         int id = leerEntero("Ingrese ID de la actividad a editar: ");
-        Actividad actividad = sistema.buscarActividad(id);
 
-        if (actividad == null) {
-            System.out.println(
-                    "No se encontro la actividad con el ID especificado: " + id
-            );
+        Actividad actividad;
+
+        try {
+
+            actividad = sistema.buscarActividad(id);
+
+        } catch (ActividadNoEncontradaException error) {
+
+            System.out.println("\n" + error.getMessage());
+
             return;
         }
 
@@ -563,15 +577,17 @@ public class MenuAgenda {
 
         int id = leerEntero("Ingrese ID de la actividad a eliminar: ");
 
-        boolean eliminada = sistema.eliminarActividadPorId(id);
+        try {
 
-        if (eliminada) {
-            System.out.println("Actividad eliminada correctamente.");
+            boolean eliminada = sistema.eliminarActividadPorId(id);
 
-        } else {
-            System.out.println(
-                    "No se encontro ninguna actividad con el ID especificado: " + id
-            );
+            if (eliminada) {
+                System.out.println("Actividad eliminada correctamente.");
+            }
+
+        } catch (ActividadNoEncontradaException error) {
+
+            System.out.println("\n" + error.getMessage());
         }
     }
 

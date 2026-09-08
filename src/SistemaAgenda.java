@@ -84,7 +84,7 @@ public class SistemaAgenda {
         dia.agregarActividad(actividad);
     }
 
-    public Actividad buscarActividad(int id) {
+    public Actividad buscarActividad(int id) throws ActividadNoEncontradaException{
 
         for (DiaAgenda dia : dias.values()) {
 
@@ -95,7 +95,7 @@ public class SistemaAgenda {
             }
         }
 
-        return null;
+        throw new ActividadNoEncontradaException("No existe actividad con el id: " + id);
     }
 
     public Actividad buscarActividad(String titulo) {
@@ -251,7 +251,7 @@ public class SistemaAgenda {
         return true;
     }
 
-    public boolean eliminarActividadPorId(int id) {
+    public boolean eliminarActividadPorId(int id) throws ActividadNoEncontradaException {
 
         for (DiaAgenda dia : dias.values()) {
 
@@ -260,7 +260,7 @@ public class SistemaAgenda {
             }
         }
 
-        return false;
+        throw  new ActividadNoEncontradaException("No existe actividad con id: " + id);
     }
 
     // Datos utilizados para probar las funcionalidades del sistema.
