@@ -19,6 +19,14 @@ public class MenuAgenda {
         this.formatoHora = DateTimeFormatter.ofPattern("HH:mm");
     }
 
+    public SistemaAgenda getSistema() {
+        return sistema;
+    }
+
+    public void setSistema(SistemaAgenda sistema) {
+        this.sistema = sistema;
+    }
+
     public BufferedReader getLector() {
         return lector;
     }
