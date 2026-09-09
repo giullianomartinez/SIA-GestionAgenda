@@ -19,6 +19,22 @@ public class MenuInicio {
         persistencia.cargarDatos(sistemaNormal);
     }
 
+    public SistemaAgenda getSistemaNormal() {
+        return sistemaNormal;
+    }
+
+    public void setSistemaNormal(SistemaAgenda sistemaNormal) {
+        this.sistemaNormal = sistemaNormal;
+    }
+
+    public PersistenciaAgenda getPersistencia() {
+        return persistencia;
+    }
+
+    public void setPersistencia(PersistenciaAgenda persistencia) {
+        this.persistencia = persistencia;
+    }
+    
     public BufferedReader getLector() {
         return lector;
     }
