@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import javax.swing.SwingUtilities;
+
 
 public class MenuInicio {
 
@@ -17,6 +19,22 @@ public class MenuInicio {
         persistencia.cargarDatos(sistemaNormal);
     }
 
+    public SistemaAgenda getSistemaNormal() {
+        return sistemaNormal;
+    }
+
+    public void setSistemaNormal(SistemaAgenda sistemaNormal) {
+        this.sistemaNormal = sistemaNormal;
+    }
+
+    public PersistenciaAgenda getPersistencia() {
+        return persistencia;
+    }
+
+    public void setPersistencia(PersistenciaAgenda persistencia) {
+        this.persistencia = persistencia;
+    }
+
     public BufferedReader getLector() {
         return lector;
     }
@@ -25,7 +43,59 @@ public class MenuInicio {
         this.lector = lector;
     }
 
-    // Permite elegir entre modo normal, modo prueba o finalizar el programa.
+
+    public void seleccionarInterfaz(String interfaz) throws IOException {
+
+        System.out.println();
+        System.out.println("===== SELECCIONAR MODO =====");
+        System.out.println("1. Modo normal");
+        System.out.println("2. Modo prueba");
+        System.out.println("3. Volver");
+        System.out.print("Seleccione una opcion: ");
+
+        String opcion = lector.readLine();
+
+        SistemaAgenda sistema;
+
+        if (opcion.equals("1")) {
+
+            sistema = sistemaNormal;
+
+        } else if (opcion.equals("2")) {
+
+            sistema = new SistemaAgenda();
+            sistema.cargarDatosIniciales();
+
+        } else if (opcion.equals("3")) {
+
+            return;
+
+        } else {
+
+            System.out.println("\nOpcion no valida.");
+            return;
+        }
+
+        // 1 = Consola, 2 = Ventana
+        if (interfaz.equals("1")) {
+
+            MenuAgenda menu = new MenuAgenda(sistema, lector);
+
+            menu.iniciar();
+
+        } else if (interfaz.equals("2")) {
+
+            SwingUtilities.invokeLater(() -> {
+
+                VentanaAgenda ventana = new VentanaAgenda(sistema);
+
+                ventana.mostrarVentana();
+            });
+        }
+    }
+
+
+    // Permite elegir entre consola, ventana o finalizar el programa.
     public void iniciar() {
 
         boolean continuar = true;
@@ -34,8 +104,8 @@ public class MenuInicio {
 
             System.out.println();
             System.out.println("===== SISTEMA DE AGENDA =====");
-            System.out.println("1. Modo normal");
-            System.out.println("2. Modo prueba");
+            System.out.println("1. Modo Consola");
+            System.out.println("2. Modo Ventana");
             System.out.println("3. Salir");
             System.out.print("Seleccione una opcion: ");
 
@@ -45,25 +115,11 @@ public class MenuInicio {
 
                 if (opcion.equals("1")) {
 
-                    MenuAgenda menu = new MenuAgenda(
-                            sistemaNormal,
-                            lector
-                    );
-
-                    menu.iniciar();
+                    seleccionarInterfaz("1");
 
                 } else if (opcion.equals("2")) {
 
-                    // El modo prueba usa una agenda independiente con datos precargados.
-                    SistemaAgenda sistemaPrueba = new SistemaAgenda();
-                    sistemaPrueba.cargarDatosIniciales();
-
-                    MenuAgenda menu = new MenuAgenda(
-                            sistemaPrueba,
-                            lector
-                    );
-
-                    menu.iniciar();
+                    seleccionarInterfaz("2");
 
                 } else if (opcion.equals("3")) {
 
@@ -73,10 +129,12 @@ public class MenuInicio {
                     System.out.println("Programa finalizado.");
 
                 } else {
+
                     System.out.println("\nOpcion no valida.");
                 }
 
             } catch (IOException error) {
+
                 System.out.println("\nNo se pudo leer la opcion.");
             }
         }
