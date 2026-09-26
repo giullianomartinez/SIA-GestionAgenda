@@ -117,7 +117,7 @@ public class VentanaDias extends JFrame {
 
     private void listarDias() {
 
-        if (sistema.getDias().isEmpty()) {
+        if (!sistema.tieneDias()) {
 
             areaResultados.setText("No hay dias registrados.");
 
@@ -129,12 +129,14 @@ public class VentanaDias extends JFrame {
         texto.append("DIAS REGISTRADOS\n");
         texto.append("-------------------------\n");
 
-        for (LocalDate fecha : sistema.getDias().keySet()) {
+        sistema.paraCadaDia(dia -> {
+
+            LocalDate fecha = dia.getFecha();
 
             texto.append(fecha.format(formatoFecha));
 
             texto.append("\n");
-        }
+        });
 
         areaResultados.setText(texto.toString());
     }
@@ -265,4 +267,3 @@ public class VentanaDias extends JFrame {
     }
 
 }
-
