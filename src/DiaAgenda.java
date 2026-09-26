@@ -21,14 +21,6 @@ public class DiaAgenda {
         this.fecha = fecha;
     }
 
-    public ArrayList<Actividad> getActividades() {
-        return actividades;
-    }
-
-    public void setActividades(ArrayList<Actividad> actividades) {
-        this.actividades = actividades;
-    }
-
     public void agregarActividad(Actividad actividad) {
         actividades.add(actividad);
     }
