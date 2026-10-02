@@ -1,4 +1,5 @@
 import java.time.LocalTime;
+import java.time.Duration;
 
 public class ActividadAcademica extends Actividad {
 
@@ -37,5 +38,14 @@ public class ActividadAcademica extends Actividad {
     @Override
     public String mostrarActividad() {
         return super.mostrarActividad() + " | Asignatura: " + asignatura;
+    }
+
+    @Override
+    public int calcularPrioridad() {
+        long duracion = Duration.between(getHoraInicio(), getHoraFin()).toMinutes();
+        if(duracion >= 120){
+            return 4;
+        }
+        return 3;
     }
 }

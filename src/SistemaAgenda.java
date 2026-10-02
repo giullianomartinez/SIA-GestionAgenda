@@ -2,6 +2,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.TreeMap;
+import java.util.function.Consumer;
 
 public class SistemaAgenda {
 
@@ -15,12 +16,13 @@ public class SistemaAgenda {
         this.siguienteId = 1;
     }
 
-    public TreeMap<LocalDate, DiaAgenda> getDias() {
-        return dias;
+    public boolean tieneDias() {
+        return !dias.isEmpty();
     }
 
-    public void setDias(TreeMap<LocalDate, DiaAgenda> dias) {
-        this.dias = dias;
+    // Permite recorrer los dias sin entregar la coleccion interna.
+    public void paraCadaDia(Consumer<DiaAgenda> accion) {
+        dias.values().forEach(accion);
     }
 
     public DateTimeFormatter getFormatoFecha() {

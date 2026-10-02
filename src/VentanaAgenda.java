@@ -106,16 +106,16 @@ public class VentanaAgenda extends JFrame {
 
         StringBuilder texto = new StringBuilder();
 
-        if (sistema.getDias().isEmpty()) {
+        if (!sistema.tieneDias()) {
 
             areaResultados.setText("La agenda no tiene dias registrados.");
 
             return;
         }
 
-        for (LocalDate fecha : sistema.getDias().keySet()) {
+        sistema.paraCadaDia(dia -> {
 
-            DiaAgenda dia = sistema.getDias().get(fecha);
+            LocalDate fecha = dia.getFecha();
 
             texto.append("----------------------------\n");
             texto.append("Fecha: ").append(fecha.format(formatoFecha)).append("\n");
@@ -138,7 +138,7 @@ public class VentanaAgenda extends JFrame {
             }
 
             texto.append("\n");
-        }
+        });
 
         areaResultados.setText(texto.toString());
 
@@ -219,4 +219,3 @@ public class VentanaAgenda extends JFrame {
         }
     }
 }
-

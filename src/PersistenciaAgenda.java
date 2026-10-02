@@ -101,14 +101,13 @@ public class PersistenciaAgenda {
         escritor.write("fecha");
         escritor.newLine();
 
-        for (DiaAgenda dia : sistema.getDias().values()) {
+        StringBuilder contenido = new StringBuilder();
 
-            escritor.write(
-                    dia.getFecha().format(formatoFecha)
-            );
+        sistema.paraCadaDia(dia -> contenido
+                .append(dia.getFecha().format(formatoFecha))
+                .append(System.lineSeparator()));
 
-            escritor.newLine();
-        }
+        escritor.write(contenido.toString());
 
         escritor.close();
     }
@@ -126,7 +125,9 @@ public class PersistenciaAgenda {
 
         escritor.newLine();
 
-        for (DiaAgenda dia : sistema.getDias().values()) {
+        StringBuilder contenido = new StringBuilder();
+
+        sistema.paraCadaDia(dia -> {
 
             for (int i = 0; i < dia.cantidadActividades(); i++) {
 
@@ -141,10 +142,11 @@ public class PersistenciaAgenda {
                         + ";" + limpiarTexto(actividad.getDescripcion())
                         + ";" + limpiarTexto(actividad.getDatoEspecifico());
 
-                escritor.write(linea);
-                escritor.newLine();
+                contenido.append(linea).append(System.lineSeparator());
             }
-        }
+        });
+
+        escritor.write(contenido.toString());
 
         escritor.close();
     }
