@@ -161,7 +161,7 @@ public class Actividad {
             case 4:
                 return "CRÍTICO";
             default:
-                return "DECONOCIDA";
+                return "DESCONOCIDA";
         }
     }
 
