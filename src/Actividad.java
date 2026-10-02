@@ -126,8 +126,8 @@ public class Actividad {
         String texto = horaInicio + " - " + horaFin
                 + " | " + titulo
                 + " | " + getTipoActividad()
-                + " | " + descripcion;
-
+                + " | " + descripcion
+                + " | Prioridad: " + obtenerEtiquetaPrioridad();
         return texto;
     }
 
@@ -143,4 +143,27 @@ public class Actividad {
     public void posponer(LocalTime horaInicio, LocalTime horaFin) throws HorarioInvalidoException {
         actualizarHorario(horaInicio, horaFin);
     }
+    
+    //orden de prioridad de las actividades (1: baja, 2: media, 3: alta, 4: crítico)
+    public int calcularPrioridad(){
+        return 0;
+    }
+
+    public String obtenerEtiquetaPrioridad(){
+        int p = calcularPrioridad();
+        switch (p) {
+            case 1:
+                return "BAJA";
+            case 2:
+                return "MEDIA";
+            case 3:
+                return "ALTA";
+            case 4:
+                return "CRÍTICO";
+            default:
+                return "DECONOCIDA";
+        }
+    }
+
+
 }
