@@ -38,4 +38,13 @@ public class ActividadProyecto extends Actividad {
     public String mostrarActividad() {
         return super.mostrarActividad() + " | Proyecto: " + nombreProyecto;
     }
+
+    @Override
+    public int calcularPrioridad() {
+        long duracion = java.time.Duration.between(getHoraInicio(), getHoraFin()).toMinutes();
+        if (duracion >= 120) {
+            return 3;
+        }
+        return 2;
+    }
 }
