@@ -38,4 +38,9 @@ public class ActividadOtro extends Actividad {
     public String mostrarActividad() {
         return super.mostrarActividad() + " | Lugar: " + lugar;
     }
+
+    @Override 
+    public int calcularPrioridad() {
+        return 2;
+    }
 }
